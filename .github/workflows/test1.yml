@@ -92,8 +92,8 @@ jobs:
           query: |
             mutation {
               moveProjectCard(input: {
-                cardId: "${{ fromJson(steps.retrieve_card.outputs.data).column.id }}",
-                columnId: $TARGET_COLUMN_ID,
+                cardId: "${{ fromJson(steps.retrieve_card.outputs.data).repository.pullRequest.projectCards.nodes[0].id }}",
+                columnId: ${{ env.TARGET_COLUMN_ID }},
                 afterCardId: null
               })
             }
