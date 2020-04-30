@@ -50,6 +50,10 @@ jobs:
           echo 'card data: ${{ steps.retrieve_card.outputs.data }}'
           echo "TARGET_PROJECT_ID=$TARGET_PROJECT_ID"
 
+      - name: checker check check
+        run: |
+          echo "${{env.TARGET_PROJECT_ID}}"
+
       # - name: get project column ids
       #   if: env.TARGET_PROJECT_ID != ''
       #   uses: octokit/graphql-action@v2.x
