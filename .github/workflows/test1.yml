@@ -82,7 +82,7 @@ jobs:
       - name: labeled isolate target column id
         if: env.LABEL_NAME == 'Passed' && github.event.action == 'labeled' && env.TARGET_PROJECT_ID != ''
         run: |
-          jq '.' $GITHUB_EVENT_PATH
+          echo "${{ steps.column_ids.outputs.data }}" # jq '.'
           
         # TARGET_COLUMN_ID=echo "${{ steps.column_ids.outputs.data }}" | jq '.repository.projects.nodes[0].columns | .[] | .[] | select(.name == "Approved for Merging") | .id'
         # echo ::set-env name=TARGET_COLUMN_ID::$TARGET_COLUMN_ID
