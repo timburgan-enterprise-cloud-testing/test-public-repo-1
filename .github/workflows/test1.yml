@@ -59,8 +59,10 @@ jobs:
                       id
                       name
                       columns {
-                        id
-                        name
+                        nodes {
+                          id
+                          name
+                        }
                       }
                     }
                   }
