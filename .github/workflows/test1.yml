@@ -50,35 +50,31 @@ jobs:
           echo 'card data: ${{ steps.retrieve_card.outputs.data }}'
           echo "TARGET_PROJECT_ID=$TARGET_PROJECT_ID"
 
-      - name: checker check check
-        run: |
-          echo "${{env.TARGET_PROJECT_ID}}"
+      - name: get project column ids
+        if: env.TARGET_PROJECT_ID != ''
+        uses: octokit/graphql-action@v2.x
+        id: column_ids
+        with:
+          query: |
+            query {
+              repository(owner: "${{ github.event.repository.owner.login }}", name: "${{ github.event.repository.name }}") {
+                  projects(first: 1, search: "${{ env.TARGET_PROJECT_ID }}") {
+                    nodes {
+                      id
+                      name
+                      columns(first:50) {
+                        nodes {
+                          id
+                          name
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # - name: get project column ids
-      #   if: env.TARGET_PROJECT_ID != ''
-      #   uses: octokit/graphql-action@v2.x
-      #   id: column_ids
-      #   with:
-      #     query: |
-      #       query {
-      #         repository(owner: "${{ github.event.repository.owner.login }}", name: "${{ github.event.repository.name }}") {
-      #             projects(first: 1, search: "${{ env.TARGET_PROJECT_ID }}") {
-      #               nodes {
-      #                 id
-      #                 name
-      #                 columns(first:50) {
-      #                   nodes {
-      #                     id
-      #                     name
-      #                   }
-      #                 }
-      #               }
-      #             }
-      #           }
-      #         }
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #
       # - name: review columns ids
       #   if: env.TARGET_PROJECT_ID != ''
       #   run: "echo 'card data: ${{ steps.column_ids.outputs.data }}'"
