@@ -1,3 +1,4 @@
+
 name: PR automation
 on:
   pull_request:
@@ -46,7 +47,7 @@ jobs:
       - name: review card data
         run: |
           echo 'card data: ${{ steps.retrieve_card.outputs.data }}'
-          echo 'fromJson(steps.retrieve_card.outputs.data).project.name: ${{ fromJson(steps.retrieve_card.outputs.data).project.name }}'
+          echo 'fromJson(steps.retrieve_card.outputs.data).project.name: ${{ fromJson(steps.retrieve_card.outputs.data).repository.pullRequest.projectCards.nodes[0].project.name }}'
 
       - name: get project column ids
         if: fromJson(steps.retrieve_card.outputs.data).project.name != ''
@@ -78,13 +79,13 @@ jobs:
         run: "echo 'card data: ${{ steps.column_ids.outputs.data }}'"
 
       - name: labeled isolate target column id
-        if: fromJson(steps.retrieve_card.outputs.data).project.name != '' && env.LABEL_NAME == 'Passed' && github.event.action == 'labeled'
+        if: env.LABEL_NAME == 'Passed' && github.event.action == 'labeled' && fromJson(steps.retrieve_card.outputs.data).repository.pullRequest.projectCards.nodes[0].project.name
         run: |
           TARGET_COLUMN_ID=echo "${{ fromJson(steps.column_ids.outputs.data).columns }}" | jq '.repository.projects.nodes[0].columns | .[] | .[] | select(.name == "Approved for Merging") | .id'
           echo ::set-env name=TARGET_COLUMN_ID::$TARGET_COLUMN_ID
 
       - name: labeled move card
-        if: fromJson(steps.retrieve_card.outputs.data).project.name != '' && env.LABEL_NAME == 'Passed' && github.event.action == 'labeled'
+        if: env.LABEL_NAME == 'Passed' && github.event.action == 'labeled' && fromJson(steps.retrieve_card.outputs.data).repository.pullRequest.projectCards.nodes[0].project.name
         uses: octokit/graphql-action@v2.x
         with:
           query: |
@@ -99,13 +100,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: unlabeled isolate target column id
-        if: fromJson(steps.retrieve_card.outputs.data).project.name != '' && env.LABEL_NAME == 'Passed' && github.event.action == 'unlabeled'
+        if: env.LABEL_NAME == 'Passed' && github.event.action == 'unlabeled' && fromJson(steps.retrieve_card.outputs.data).repository.pullRequest.projectCards.nodes[0].project.name
         run: |
           TARGET_COLUMN_ID=echo "${{ fromJson(steps.column_ids.outputs.data).columns }}" | jq '.repository.projects.nodes[0].columns | .[] | .[] | select(.name == "In Review") | .id'
           echo ::set-env name=TARGET_COLUMN_ID::$TARGET_COLUMN_ID
 
       - name: unlabeled move card
-        if: fromJson(steps.retrieve_card.outputs.data).project.name != '' && env.LABEL_NAME == 'Passed' && github.event.action == 'unlabeled'
+        if: env.LABEL_NAME == 'Passed' && github.event.action == 'unlabeled' && fromJson(steps.retrieve_card.outputs.data).repository.pullRequest.projectCards.nodes[0].project.name
         uses: octokit/graphql-action@v2.x
         with:
           query: |
