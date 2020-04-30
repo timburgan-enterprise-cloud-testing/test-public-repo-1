@@ -1,4 +1,3 @@
-
 name: PR automation
 on:
   pull_request:
@@ -88,7 +87,6 @@ jobs:
 
       - name: labeled move card
         if: env.LABEL_NAME == 'Passed' && github.event.action == 'labeled'
-        run: "echo 'meh again'"
         uses: octokit/graphql-action@v2.x
         with:
           query: |
@@ -110,7 +108,6 @@ jobs:
 
       - name: unlabeled move card
         if: env.LABEL_NAME == 'Passed' && github.event.action == 'unlabeled'
-        run: "echo 'meh again'"
         uses: octokit/graphql-action@v2.x
         with:
           query: |
