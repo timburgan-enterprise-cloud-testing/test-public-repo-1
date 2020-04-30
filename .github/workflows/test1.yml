@@ -58,7 +58,7 @@ jobs:
                     nodes {
                       id
                       name
-                      columns {
+                      columns(first:50) {
                         nodes {
                           id
                           name
