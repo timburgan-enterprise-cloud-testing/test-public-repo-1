@@ -53,7 +53,7 @@ jobs:
         with:
           query: |
             query {
-              repository(owner:$owner, name:$repo) {
+              repository(owner: "${{ github.event.repository.owner.login }}", name: "${{ github.event.repository.name }}") {
                   projects(first: 1, search: "${{ fromJson(steps.retrieve_card.outputs.data).project.name }}") {
                     nodes {
                       id
@@ -68,9 +68,6 @@ jobs:
                   }
                 }
               }
-          owner: ${{ github.event.repository.owner.login }}
-          repo: ${{ github.event.repository.name }}
-          number: ${{ github.event.number }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
