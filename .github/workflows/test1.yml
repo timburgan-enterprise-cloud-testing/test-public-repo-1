@@ -30,7 +30,7 @@ jobs:
                           name
                         }
                         project {
-                          id
+                          databaseId
                           name
                         }
                       }
