@@ -82,24 +82,26 @@ jobs:
       - name: labeled isolate target column id
         if: env.LABEL_NAME == 'Passed' && github.event.action == 'labeled' && env.TARGET_PROJECT_ID != ''
         run: |
-          TARGET_COLUMN_ID=echo '${{ steps.column_ids.outputs.data }}' | jq '.repository.projects.nodes[0].columns | .[] | .[] | select(.name == "Approved for Merging") | .id'
-          echo ::set-env name=TARGET_COLUMN_ID::$TARGET_COLUMN_ID
+          echo '${{ steps.column_ids.outputs.data }}' | jq '.repository.projects.nodes[0].columns | .[] | .[] | select(.name == "Approved for Merging") | .id'
 
-      - name: labeled move card
-        if: env.LABEL_NAME == 'Passed' && github.event.action == 'labeled' && env.TARGET_PROJECT_ID != ''
-        uses: octokit/graphql-action@v2.x
-        with:
-          query: |
-            mutation {
-              moveProjectCard(input: {
-                cardId: "${{ fromJson(steps.retrieve_card.outputs.data).repository.pullRequest.projectCards.nodes[0].id }}",
-                columnId: ${{ env.TARGET_COLUMN_ID }},
-                afterCardId: null
-              })
-            }
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
+        # TARGET_COLUMN_ID=echo '${{ steps.column_ids.outputs.data }}' | jq '.repository.projects.nodes[0].columns | .[] | .[] | select(.name == "Approved for Merging") | .id'
+        # echo ::set-env name=TARGET_COLUMN_ID::$TARGET_COLUMN_ID
+
+      # - name: labeled move card
+      #   if: env.LABEL_NAME == 'Passed' && github.event.action == 'labeled' && env.TARGET_PROJECT_ID != ''
+      #   uses: octokit/graphql-action@v2.x
+      #   with:
+      #     query: |
+      #       mutation {
+      #         moveProjectCard(input: {
+      #           cardId: "${{ fromJson(steps.retrieve_card.outputs.data).repository.pullRequest.projectCards.nodes[0].id }}",
+      #           columnId: ${{ env.TARGET_COLUMN_ID }},
+      #           afterCardId: null
+      #         })
+      #       }
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       # - name: unlabeled isolate target column id
       #   if: env.LABEL_NAME == 'Passed' && github.event.action == 'unlabeled' && env.TARGET_PROJECT_ID != ''
       #   run: |
