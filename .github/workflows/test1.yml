@@ -16,7 +16,7 @@ jobs:
 
       - name: retrieve card
         uses: octokit/graphql-action@v2.x
-        id: get_card
+        id: retrieve_card
         with:
           query: |
             query  get_project_name($owner:String!, $repo:String!, $number:Int!) {
@@ -25,12 +25,11 @@ jobs:
                     projectCards(first: 1) {
                       nodes {
                         id
-                        databaseId
                         column {
+                          id
                           name
                         }
                         project {
-                          databaseId
                           name
                         }
                       }
@@ -44,4 +43,39 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - run: "echo 'card data: ${{ steps.get_card.outputs.data }}'"
+      - name: review card data
+        run: "echo 'card data: ${{ steps.retrieve_card.outputs.data }}'"
+
+      - name: get project column ids
+        uses: octokit/graphql-action@v2.x
+        id: column_ids
+        with:
+          query: |
+            query {
+              repository(owner:$owner, name:$repo) {
+                  projects(first: 1, search: PROJECT_NAME) {
+                    nodes {
+                      id
+                      name
+                      columns {
+                        id
+                        name
+                      }
+                    }
+                  }
+                }
+              }
+          owner: ${{ github.event.repository.owner.login }}
+          repo: ${{ github.event.repository.name }}
+          number: ${{ github.event.number }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: review columns ids
+        run: "echo 'card data: ${{ steps.column_ids.outputs.data }}'"
+
+      - name: isolate target column id
+        run: "echo 'meh'"
+
+      - name: labeled move card
+        run: "echo 'meh again'"
