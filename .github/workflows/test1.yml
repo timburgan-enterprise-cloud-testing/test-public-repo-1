@@ -45,7 +45,7 @@ jobs:
 
       - name: isolate project id
         run: |
-          TARGET_PROJECT_ID=echo "${{ fromJson(steps.retrieve_card.outputs.data).repository.pullRequest.projectCards.nodes[0].project.name }}"
+          TARGET_PROJECT_ID="${{ fromJson(steps.retrieve_card.outputs.data).repository.pullRequest.projectCards.nodes[0].project.name }}"
           echo ::set-env name=TARGET_PROJECT_ID::$TARGET_PROJECT_ID
           echo 'card data: ${{ steps.retrieve_card.outputs.data }}'
           echo "TARGET_PROJECT_ID=$TARGET_PROJECT_ID"
@@ -74,17 +74,17 @@ jobs:
       #         }
       #   env:
       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # 
+      #
       # - name: review columns ids
       #   if: env.TARGET_PROJECT_ID != ''
       #   run: "echo 'card data: ${{ steps.column_ids.outputs.data }}'"
-      # 
+      #
       # - name: labeled isolate target column id
       #   if: env.LABEL_NAME == 'Passed' && github.event.action == 'labeled' && env.TARGET_PROJECT_ID != '' ''
       #   run: |
       #     TARGET_COLUMN_ID=echo "${{ fromJson(steps.column_ids.outputs.data).columns }}" | jq '.repository.projects.nodes[0].columns | .[] | .[] | select(.name == "Approved for Merging") | .id'
       #     echo ::set-env name=TARGET_COLUMN_ID::$TARGET_COLUMN_ID
-      # 
+      #
       # - name: labeled move card
       #   if: env.LABEL_NAME == 'Passed' && github.event.action == 'labeled' && env.TARGET_PROJECT_ID != ''
       #   uses: octokit/graphql-action@v2.x
@@ -99,13 +99,13 @@ jobs:
       #       }
       #   env:
       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # 
+      #
       # - name: unlabeled isolate target column id
       #   if: env.LABEL_NAME == 'Passed' && github.event.action == 'unlabeled' && env.TARGET_PROJECT_ID != ''
       #   run: |
       #     TARGET_COLUMN_ID=echo "${{ fromJson(steps.column_ids.outputs.data).columns }}" | jq '.repository.projects.nodes[0].columns | .[] | .[] | select(.name == "In Review") | .id'
       #     echo ::set-env name=TARGET_COLUMN_ID::$TARGET_COLUMN_ID
-      # 
+      #
       # - name: unlabeled move card
       #   if: env.LABEL_NAME == 'Passed' && github.event.action == 'unlabeled' && env.TARGET_PROJECT_ID != ''
       #   uses: octokit/graphql-action@v2.x
