@@ -1,4 +1,3 @@
-
 name: PR automation
 on:
   pull_request:
@@ -14,7 +13,7 @@ jobs:
           LABEL_NAME1=$(jq --raw-output ".label.name" $GITHUB_EVENT_PATH)
           echo "Label in action is $LABEL_NAME1"
           echo ::set-env name=LABEL_NAME::$LABEL_NAME1
-      
+
       - name: retrieve card
         uses: octokit/graphql-action@v2.x
         id: get_card
@@ -26,6 +25,8 @@ jobs:
                     projectCards(first: 1) {
                       nodes {
                         id
+                        databaseId
+                        column
                         project {
                           name
                         }
@@ -39,5 +40,5 @@ jobs:
           number: ${{ github.event.number }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
+
       - run: "echo 'card data: ${{ steps.get_card.outputs.data }}'"
