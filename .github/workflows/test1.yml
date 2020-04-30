@@ -26,8 +26,11 @@ jobs:
                       nodes {
                         id
                         databaseId
-                        column
+                        column {
+                          name
+                        }
                         project {
+                          id
                           name
                         }
                       }
