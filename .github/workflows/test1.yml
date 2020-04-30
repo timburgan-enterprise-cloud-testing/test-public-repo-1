@@ -75,7 +75,8 @@ jobs:
         run: "echo 'card data: ${{ steps.column_ids.outputs.data }}'"
 
       - name: isolate target column id
-        run: "echo 'meh'"
+        run: |
+          jq '${{ steps.column_ids.outputs.data }}.columns'
 
       - name: labeled move card
         run: "echo 'meh again'"
