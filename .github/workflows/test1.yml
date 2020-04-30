@@ -44,7 +44,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: review card data
-        run: "echo 'card data: ${{ steps.retrieve_card.outputs.data }}'"
+        run: |
+          echo 'card data: ${{ steps.retrieve_card.outputs.data }}'
+          echo 'fromJson(steps.retrieve_card.outputs.data).project.name: ${{ fromJson(steps.retrieve_card.outputs.data).project.name }}'
 
       - name: get project column ids
         if: fromJson(steps.retrieve_card.outputs.data).project.name != ''
