@@ -1,3 +1,4 @@
+
 name: PR automation
 on:
   pull_request:
@@ -53,7 +54,7 @@ jobs:
           query: |
             query {
               repository(owner:$owner, name:$repo) {
-                  projects(first: 1, search: PROJECT_NAME) {
+                  projects(first: 1, search: "${{ fromJson(steps.retrieve_card.outputs.data).project.name }}") {
                     nodes {
                       id
                       name
