@@ -91,11 +91,18 @@ jobs:
         with:
           query: |
             mutation {
-              moveProjectCard(input: {
-                cardId: "${{ fromJson(steps.retrieve_card.outputs.data).repository.pullRequest.projectCards.nodes[0].id }}",
-                columnId: ${{ env.TARGET_COLUMN_ID }},
-                afterCardId: null
-              })
+              moveProjectCard(input:  {
+                                        cardId: "${{ fromJson(steps.retrieve_card.outputs.data).repository.pullRequest.projectCards.nodes[0].id }}",
+                                        columnId: ${{ env.TARGET_COLUMN_ID }},
+                                        afterCardId: null
+                                      }
+              ) {
+                cardEdge {
+                  node {
+                    id
+                  }
+                }
+              }
             }
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
