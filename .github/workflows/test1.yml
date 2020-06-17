@@ -4,15 +4,15 @@ jobs:
   example_job:
     runs-on: ubuntu-latest
     steps:
-      
+
     - id: files_get
       name: Get files changed
-      # See: https://github.com/marketplace/actions/get-all-changed-files
-      # This is generate a JSON list of changed files in `steps.files_get.outputs.all`
-      uses: lots0logs/gh-action-get-changed-files@2.1.4
+      # See: https://github.com/marketplace/actions/changed-files-exporter
+      # This is generate a JSON list of changed files in `steps.files_get.outputs.files_created`
+      uses: futuratrepadeira/changed-files@v3.1.0
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        
+        repo-token: ${{ github.token }}
+
     - id: files_detect
       name: Detect if foo-service was changed
       run: |
@@ -20,7 +20,7 @@ jobs:
         directory_was_changed='no'
 
         # detect
-        readarray -t changed_files <<<"$(jq -r '.[]' <<<'${{ steps.files_get.outputs.all }}')"
+        readarray -t changed_files <<<"$(jq -r '.[]' <<<'${{ steps.files_get.outputs.files_created }}')"
         for changed_file in ${changed_files[@]}; do
           echo "Checking: ${changed_file}"
           if [[ $changed_file =~ $directory_trigger ]]
@@ -38,7 +38,7 @@ jobs:
       if: steps.files_detect.outputs.directory_was_changed == 'yes'
       run: |
         echo "Hello. foo-service only logic."
-        
+
       # Run this step, only if the foo-service directory was not changed in this PR.
     - name: non foo-service only change
       if: steps.files_detect.outputs.directory_was_changed != 'yes'
