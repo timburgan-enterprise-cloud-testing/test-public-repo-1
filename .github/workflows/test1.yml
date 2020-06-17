@@ -7,11 +7,11 @@ jobs:
 
     - id: files_get
       name: Get files changed
-      # See: https://github.com/marketplace/actions/changed-files-exporter
-      # This is generate a JSON list of changed files in `steps.files_get.outputs.files_created`
-      uses: futuratrepadeira/changed-files@v3.1.0
+      # See: https://github.com/marketplace/actions/get-all-changed-files
+      # This is generate a JSON list of changed files in `steps.files_get.outputs.all`
+      uses: jitterbit/get-changed-files@v1
       with:
-        repo-token: ${{ github.token }}
+        format: 'json'
 
     - id: files_detect
       name: Detect if foo-service was changed
@@ -20,7 +20,7 @@ jobs:
         directory_was_changed='no'
 
         # detect
-        readarray -t changed_files <<<"$(jq -r '.[]' <<<'${{ steps.files_get.outputs.files_created }}')"
+        readarray -t changed_files <<<"$(jq -r '.[]' <<<'${{ steps.files_get.outputs.all }}')"
         for changed_file in ${changed_files[@]}; do
           echo "Checking: ${changed_file}"
           if [[ $changed_file =~ $directory_trigger ]]
