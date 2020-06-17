@@ -11,7 +11,7 @@ jobs:
       # This is generate a JSON list of changed files in `steps.files_get.outputs.files_created`
       uses: futuratrepadeira/changed-files@v3.1.0
       with:
-        repo-token: ${{ github.token }}
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
 
     - id: files_detect
       name: Detect if foo-service was changed
