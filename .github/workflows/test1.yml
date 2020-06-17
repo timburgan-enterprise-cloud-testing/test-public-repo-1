@@ -20,13 +20,13 @@ jobs:
         # detect
         readarray -t changed_files <<<"$(jq -r '.[]' <<<'${{ steps.files_get.outputs.all }}')"
         for changed_file in ${changed_files[@]}; do
-          echo "Detecting: ${changed_file}"
+          echo "Checking: ${changed_file}"
           if [[ $changed_file =~ $directory_trigger ]]
           then
-            echo " - ${directory_trigger} was changed."
+            echo " - ${directory_trigger} was changed with that file."
             directory_was_changed='yes'
           else
-            echo " - Nope, not changed."
+            echo " ${directory_trigger} was not changed with that file."
           fi
         done
         echo "::set-output name=directory_was_changed::${directory_was_changed}"
@@ -40,4 +40,4 @@ jobs:
       if: ${{ steps.files_detect.outputs.directory_was_changed }} != 'yes'
       run: |
         echo "Hello. non foo-service only logic."
-    
+      
