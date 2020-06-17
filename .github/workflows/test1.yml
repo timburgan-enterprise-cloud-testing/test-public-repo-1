@@ -10,6 +10,8 @@ jobs:
       # See: https://github.com/marketplace/actions/get-all-changed-files
       # This is generate a JSON list of changed files in `steps.files_get.outputs.all`
       uses: lots0logs/gh-action-get-changed-files@2.1.4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
         
     - id: files_detect
       name: Detect if foo-service was changed
