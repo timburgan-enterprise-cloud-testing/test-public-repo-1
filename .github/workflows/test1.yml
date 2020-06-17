@@ -4,13 +4,13 @@ jobs:
   example_job:
     runs-on: ubuntu-latest
     steps:
+      
     - id: files_get
       name: Get files changed
       # See: https://github.com/marketplace/actions/get-all-changed-files
       # This is generate a JSON list of changed files in `steps.files_get.outputs.all`
-      uses: jitterbit/get-changed-files@v1
-      with:
-        format: 'json'
+      uses: lots0logs/gh-action-get-changed-files@2.1.4
+        
     - id: files_detect
       name: Detect if foo-service was changed
       run: |
@@ -36,6 +36,8 @@ jobs:
       if: steps.files_detect.outputs.directory_was_changed == 'yes'
       run: |
         echo "Hello. foo-service only logic."
+        
+      # Run this step, only if the foo-service directory was not changed in this PR.
     - name: non foo-service only change
       if: steps.files_detect.outputs.directory_was_changed != 'yes'
       run: |
