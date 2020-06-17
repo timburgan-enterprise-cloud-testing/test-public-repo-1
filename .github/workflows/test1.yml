@@ -13,8 +13,8 @@ jobs:
         format: 'json'
     - name: Detect if foo-service was changed
       run: |
-        directory_trigger = "foo-service"
-        directory_was_changed = false
+        directory_trigger="foo-service"
+        directory_was_changed=false
 
         # detect
         readarray -t changed_files <<<"$(jq -r '.[]' <<<'${{ steps.files.outputs.all }}')"
