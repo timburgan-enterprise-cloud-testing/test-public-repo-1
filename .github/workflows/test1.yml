@@ -15,25 +15,29 @@ jobs:
       name: Detect if foo-service was changed
       run: |
         directory_trigger="foo-service/"
-        directory_was_changed=false
+        directory_was_changed='no'
 
         # detect
         readarray -t changed_files <<<"$(jq -r '.[]' <<<'${{ steps.files_get.outputs.all }}')"
         for changed_file in ${changed_files[@]}; do
-          echo "Do something with: ${changed_file}"
+          echo "Detecting: ${changed_file}"
           if [[ $changed_file =~ $directory_trigger ]]
           then
-            echo "${directory_trigger} was changed."
-            directory_was_changed=true
+            echo " - ${directory_trigger} was changed."
+            directory_was_changed='yes'
           else
-            echo "Nope, not changed."
+            echo " - Nope, not changed."
           fi
         done
         echo "::set-output name=directory_was_changed::${directory_was_changed}"
 
       # Run this step, only if the foo-service directory was changed in this PR.
     - name: foo-service only change
-      if: ${{ steps.files_detect.outputs.directory_was_changed }} == 'true'
+      if: ${{ steps.files_detect.outputs.directory_was_changed }} == 'yes'
       run: |
         echo "Hello. foo-service only logic."
-        
+    - name: non foo-service only change
+      if: ${{ steps.files_detect.outputs.directory_was_changed }} != 'yes'
+      run: |
+        echo "Hello. non foo-service only logic."
+    
