@@ -4,23 +4,34 @@ jobs:
   example_job:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v2
 
-    - id: files_get
-      name: Get files changed
-      # See: https://github.com/marketplace/actions/get-all-changed-files
-      # This is generate a JSON list of changed files in `steps.files_get.outputs.all`
-      uses: jitterbit/get-changed-files@v1
+    - id: find_pr
+      # See: https://github.com/marketplace/actions/find-current-pull-request
+      # For this push, if it's associated to a PR, save the PR number to `steps.find_pr.outputs.number`
+      uses: jwalton/gh-find-current-pr@v1
       with:
-        format: 'json'
+        github-token: ${{ secrets.GITHUB_TOKEN }}
 
-    - id: files_detect
+    - if: success() && steps.find_pr.outputs.number
+      id: files_changed
+      uses: octokit/request-action@v2.x
+      with:
+        route: GET /repos/:owner/:repo/pulls/:pull_number/files
+        repository: ${{ github.repository }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - if: success() && steps.find_pr.outputs.number
+      id: files_detect
       name: Detect if foo-service was changed
       run: |
         directory_trigger="foo-service/"
         directory_was_changed='no'
 
-        # detect
-        readarray -t changed_files <<<"$(jq -r '.[]' <<<'${{ steps.files_get.outputs.all }}')"
+        ${{ steps.files_changed.outputs.data }}' | jq .filename
+
+        readarray -t changed_files <<<"$(echo $files | jq -r '. | map(.filename))"
         for changed_file in ${changed_files[@]}; do
           echo "Checking: ${changed_file}"
           if [[ $changed_file =~ $directory_trigger ]]
