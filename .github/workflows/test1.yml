@@ -28,7 +28,7 @@ jobs:
         directory_trigger="foo-service/"
         directory_was_changed='no'
 
-        echo $(echo $files | jq -r '. | map(.filename)')
+        echo $(echo '${{ steps.files_changed.outputs.data }}' | jq -r '. | map(.filename)')
 
         # readarray -t changed_files <<<"$(echo $files | jq -r '. | map(.filename)')"
         # for changed_file in ${changed_files[@]}; do
