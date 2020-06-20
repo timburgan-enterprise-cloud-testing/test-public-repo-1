@@ -46,12 +46,16 @@ jobs:
 
       # Run this step, only if the foo-service directory was changed in this PR.
     - name: foo-service only change
-      if: steps.files_detect.outputs.directory_was_changed == 'yes'
+      if: success() && 
+          steps.find_pr.outputs.number && 
+          steps.files_detect.outputs.directory_was_changed == 'yes'
       run: |
         echo "Hello. foo-service only logic."
 
       # Run this step, only if the foo-service directory was not changed in this PR.
     - name: non foo-service only change
-      if: steps.files_detect.outputs.directory_was_changed != 'yes'
+      if: success() && 
+          steps.find_pr.outputs.number && 
+          steps.files_detect.outputs.directory_was_changed != 'yes'
       run: |
         echo "Hello. non foo-service only logic."
