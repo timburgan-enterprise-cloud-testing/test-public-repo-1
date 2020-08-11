@@ -2,57 +2,7 @@ name: Example
 on: [push]
 jobs:
   example_job:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
-    - uses: actions/checkout@v2
-
-    - id: find_pr
-      # See: https://github.com/marketplace/actions/find-current-pull-request
-      # For this push, if it's associated to a PR, save the PR number to `steps.find_pr.outputs.number`
-      uses: jwalton/gh-find-current-pr@v1
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-
-    - if: success() && steps.find_pr.outputs.number
-      id: files_changed
-      uses: octokit/request-action@v2.x
-      with:
-        route: GET /repos/${{ github.repository }}/pulls/${{ steps.find_pr.outputs.number }}/files
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - if: success() && steps.find_pr.outputs.number
-      id: files_detect
-      name: Detect if foo-service was changed
-      run: |
-        directory_trigger="foo-service/"
-        directory_was_changed='no'
-
-        readarray -t changed_files <<<"$(echo '${{ steps.files_changed.outputs.data }}' | jq -r '. | map(.filename)')"
-        for changed_file in ${changed_files[@]}; do
-          echo "Checking: ${changed_file}"
-          if [[ $changed_file =~ $directory_trigger ]]
-          then
-            echo " - ${directory_trigger} was changed with that file."
-            directory_was_changed='yes'
-          else
-            echo " - ${directory_trigger} was not changed with that file."
-          fi
-        done
-        echo "::set-output name=directory_was_changed::${directory_was_changed}"
-
-      # Run this step, only if the foo-service directory was changed in this PR.
-    - name: foo-service only change
-      if: success() &&
-          steps.find_pr.outputs.number &&
-          steps.files_detect.outputs.directory_was_changed == 'yes'
-      run: |
-        echo "Hello. foo-service only logic."
-
-      # Run this step, only if the foo-service directory was not changed in this PR.
-    - name: non foo-service only change
-      if: success() &&
-          steps.find_pr.outputs.number &&
-          steps.files_detect.outputs.directory_was_changed != 'yes'
-      run: |
-        echo "Hello. non foo-service only logic."
+    - run: |
+        echo "hello"
