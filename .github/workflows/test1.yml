@@ -19,3 +19,8 @@ jobs:
 
     - name: see VAR_2
       run: echo ${{ env.VAR_2 }}
+
+    - name: again
+      run: |
+        BOOST_ROOT=${{ env.VAR_2 }}
+        echo ${{ env.BOOST_ROOT }}
