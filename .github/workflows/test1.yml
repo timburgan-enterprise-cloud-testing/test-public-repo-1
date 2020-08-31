@@ -5,6 +5,6 @@ jobs:
     runs-on: self-hosted
     steps:
     - name: echo
-      run: echo ${BOOST_ROOT}
+      run: echo ${{BOOST_ROOT}}
       env:
-        BOOST_ROOT: $GITHUB_REPOSITORY
+        BOOST_ROOT: ${GITHUB_REPOSITORY}
