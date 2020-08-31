@@ -5,7 +5,7 @@ jobs:
     runs-on: self-hosted
     steps:
     - name: echo 1
-      run: echo ${{ env.VAR_2 }}
+      run: echo ${{ VAR_2 }}
       env:
         VAR_2: meh
     - name: echo 2
