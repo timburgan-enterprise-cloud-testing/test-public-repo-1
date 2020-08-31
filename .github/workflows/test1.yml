@@ -9,26 +9,13 @@ jobs:
       run: echo ${{ env.VAR_1 }}
       env:
         VAR_1: meh
-      
-    - name: echo 2
-      run: echo ${{ env.VAR_2 }}
-      env:
-        VAR_2: ${{ github.repository }}
 
-    - name: echo 3
-      run: echo ${{ env.VAR_2 }}
-
-    - name: echo 4
-      run: echo ${{ env.VAR_3 }}
-      env:
-        VAR_3: ${{ env.VAR_1 }}
-
-    - name: set VAR_4
+    - name: set VAR_2
       run: |
-        echo ${{ env.VAR_4 }}
-        echo ::set-env name=VAR_4::"${{ env.VAR_4 }}"
+        echo ${{ env.VAR_2 }}
+        echo ::set-env name=VAR_2::"${{ env.VAR_2 }}"
       env:
-        VAR_4: meh
+        VAR_2: boom
 
-    - name: see VAR_4
-      run: echo ${{ env.VAR_4 }}
+    - name: see VAR_2
+      run: echo ${{ env.VAR_2 }}
