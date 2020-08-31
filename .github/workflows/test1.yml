@@ -5,15 +5,17 @@ jobs:
     runs-on: self-hosted
     steps:
     - name: echo
-      run: echo ${{ env.BOOST_ROOT }}
+      run: echo ${{ env.VAR_1 }}
       env:
-        BOOST_ROOT: ${{ env.HOME }}
+        VAR_1: ${{ env.HOME }}
     - name: echo 2
-      run: echo ${{ env.BOOST_ROOT }}
+      run: echo ${{ env.VAR_2 }}
       env:
-        BOOST_ROOT: meh
+        VAR_2: meh
     - name: Set env var via RUN
       run: |
-        echo ::set-env name=BOOST_ROOT::${{ env.HOME }}
+        echo ::set-env name=VAR_3::${{ env.VAR_2 }}
     - name: echo 3
-      run: echo ${{ env.BOOST_ROOT }}
+      run: echo ${{ env.VAR_3 }}
+    - name: echo 4
+      run: echo $VAR_3
