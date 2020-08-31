@@ -5,6 +5,19 @@ jobs:
     runs-on: self-hosted
     steps:
     - name: echo 1
+      run: echo ${{ env.VAR_1 }}
+      env:
+        VAR_1: meh
+      
+    - name: echo 2
       run: echo ${{ env.VAR_2 }}
       env:
-        VAR_2: meh
+        VAR_2: ${{ github.repository }}
+
+    - name: echo 3
+      run: echo ${{ env.VAR_2 }}
+
+    - name: echo 4
+      run: echo ${{ env.VAR_3 }}
+      env:
+        VAR_3: ${{ env.VAR_1 }}
