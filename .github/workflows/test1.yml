@@ -4,5 +4,7 @@ jobs:
   example_job:
     runs-on: self-hosted
     steps:
-    - run: |
-        echo "hello"
+    - name: echo
+      run: echo ${BOOST_ROOT}
+      env:
+        BOOST_ROOT: ${BOOST_ROOT_1_72_0} 
