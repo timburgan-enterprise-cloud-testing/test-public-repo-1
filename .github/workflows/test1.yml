@@ -21,3 +21,13 @@ jobs:
       run: echo ${{ env.VAR_3 }}
       env:
         VAR_3: ${{ env.VAR_1 }}
+
+    - name: set VAR_4
+      run: |
+        echo ${{ env.VAR_4 }}
+        echo ::set-env name=VAR_4::${{ env.VAR_4 }}
+      env:
+        VAR_4: meh
+
+    - name: see VAR_4
+      run: echo ${{ env.VAR_5 }}
