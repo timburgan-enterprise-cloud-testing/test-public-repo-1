@@ -12,3 +12,8 @@ jobs:
       run: echo ${{ env.BOOST_ROOT }}
       env:
         BOOST_ROOT: meh
+    - name: Set env var via RUN
+      run: |
+        echo ::set-env name=BOOST_ROOT::${{ env.HOME }}
+    - name: echo 3
+      run: echo ${{ env.BOOST_ROOT }}
