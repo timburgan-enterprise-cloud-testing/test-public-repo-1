@@ -8,3 +8,7 @@ jobs:
       run: echo ${{ env.BOOST_ROOT }}
       env:
         BOOST_ROOT: ${{ env.HOME }}
+    - name: echo 2
+      run: echo ${{ env.BOOST_ROOT }}
+      env:
+        BOOST_ROOT: meh
