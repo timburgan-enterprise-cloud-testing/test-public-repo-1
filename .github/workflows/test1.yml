@@ -7,4 +7,4 @@ jobs:
     - name: echo
       run: echo ${{ env.BOOST_ROOT }}
       env:
-        BOOST_ROOT: ${{ env.GITHUB_REPOSITORY }}
+        BOOST_ROOT: ${{ env.HOME }}
