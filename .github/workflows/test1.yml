@@ -26,7 +26,7 @@ jobs:
     - name: set VAR_4
       run: |
         echo ${{ env.VAR_4 }}
-        ::set-env name=VAR_4::${{ env.VAR_4 }}
+        ::set-env name=VAR_4::"${{ env.VAR_4 }}"
       env:
         VAR_4: meh
 
