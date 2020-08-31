@@ -23,4 +23,4 @@ jobs:
     - name: again
       run: |
         BOOST_ROOT=${{ env.VAR_2 }}
-        echo ${{ env.BOOST_ROOT }}
+        echo ${BOOST_ROOT}
