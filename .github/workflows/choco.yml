@@ -29,10 +29,10 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2    
 
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.1.302
+#     - name: Setup .NET Core
+#       uses: actions/setup-dotnet@v1
+#       with:
+#         dotnet-version: 3.1.302
 
     # - name: Restore Packages
     #   run: dotnet restore
@@ -40,8 +40,8 @@ jobs:
     # - name: Build with dotnet
     #   run: dotnet build --configuration Release
       
-    - name: Install Octopus CLI
-      run: C:\ProgramData\Chocolatey\bin\choco.exe install octopustools
+#     - name: Install Octopus CLI
+#       run: C:\ProgramData\Chocolatey\bin\choco.exe install octopustools
     
     - name: Check Octopus CLI Version
       run: octo version
