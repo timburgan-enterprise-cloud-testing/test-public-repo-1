@@ -14,8 +14,7 @@ jobs:
 
     - name: Install Octopus CLI
       run: |
-        choco sources --confirm --ignore-dependencies --debug --verbose
-      # choco install octopustools
+        choco install octopustools --confirm --ignore-dependencies --debug --verbose
     
 #     - name: Check Octopus CLI Version
 #       run: octo version
