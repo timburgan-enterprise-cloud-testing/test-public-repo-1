@@ -41,7 +41,9 @@ jobs:
     #   run: dotnet build --configuration Release
       
     - name: Install Octopus CLI
-      run: choco install octopustools 
+      uses: crazy-max/ghaction-chocolatey@v1
+      with:
+        args: install octopustools
     
     - name: Check Octopus CLI Version
       run: octo version
