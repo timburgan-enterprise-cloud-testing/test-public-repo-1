@@ -2,61 +2,22 @@
 
 name: CI
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
 
-env:
-    PACKAGE_PREFIX: 2020.1.1
-    OCTOPUS_PROJECT_NAME: "LIC Services - Reconciliation"  
-    OCTOPUS_SPACE_NAME: Default
-    OCTOPUS_ENVIRONMENT_NAME: "Test Gold"
-    SERVICE_NAME: LIC.Services.Reconciliation.Db2PollingService  
-    
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: windows-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2    
 
-#     - name: Setup .NET Core
-#       uses: actions/setup-dotnet@v1
-#       with:
-#         dotnet-version: 3.1.302
-
-    # - name: Restore Packages
-    #   run: dotnet restore
-        
-    # - name: Build with dotnet
-    #   run: dotnet build --configuration Release
-      
     - name: Install Octopus CLI
-      run: C:\ProgramData\Chocolatey\bin\choco.exe -? 
+      run: |
+        choco -? 
+        choco source
       # install octopustools
     
-    - name: Check Octopus CLI Version
-      run: octo version
-    
-    # - name: Package for Octopus
-    #   env: 
-    #       PACKAGE_V: '${{ env.PACKAGE_PREFIX }}.${{ github.run_number }}'
-    #   run: |
-    #     octo pack --id="${{ env.SERVICE_NAME }}" --format="Zip" --version="${{ env.PACKAGE_V }}" --basePath="./LIC.Services.Reconciliation.Db2PollingService/bin/Release/net472" --outFolder="./packages"
-    #     octo push --package="./packages/${{ env.SERVICE_NAME }}.${{ env.PACKAGE_V }}.zip" --server="${{ secrets.OCTOPUS_SERVER }}" --apiKey="${{ secrets.OCTOPUS_DEPLOY_API_KEY }}"
-      
-    # - name: Create and Deploy Release
-    #   env: 
-    #       PACKAGE_V: '${{ env.PACKAGE_PREFIX }}.${{ github.run_number }}'
-    #   run: octo create-release --project="${{ env.OCTOPUS_PROJECT_NAME }}" --packageVersion="${{ env.PACKAGE_V }}" --releaseNumber="${{ env.PACKAGE_V }}" --server="${{ secrets.OCTOPUS_SERVER }}" --apiKey="${{ secrets.OCTOPUS_DEPLOY_API_KEY }}" --space="${{ env.OCTOPUS_SPACE_NAME }}" --deployTo="${{ env.OCTOPUS_ENVIRONMENT_NAME }}"
-
+#     - name: Check Octopus CLI Version
+#       run: octo version
     
