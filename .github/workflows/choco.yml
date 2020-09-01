@@ -40,8 +40,9 @@ jobs:
     # - name: Build with dotnet
     #   run: dotnet build --configuration Release
       
-#     - name: Install Octopus CLI
-#       run: C:\ProgramData\Chocolatey\bin\choco.exe install octopustools
+    - name: Install Octopus CLI
+      run: C:\ProgramData\Chocolatey\bin\choco.exe -? 
+      # install octopustools
     
     - name: Check Octopus CLI Version
       run: octo version
