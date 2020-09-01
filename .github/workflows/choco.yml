@@ -41,23 +41,21 @@ jobs:
     #   run: dotnet build --configuration Release
       
     - name: Install Octopus CLI
-      uses: crazy-max/ghaction-chocolatey@v1
-      with:
-        args: install octopustools
+      run: C:\ProgramData\Chocolatey\bin\choco.exe install octopustools
     
     - name: Check Octopus CLI Version
       run: octo version
     
-    - name: Package for Octopus
-      env: 
-          PACKAGE_V: '${{ env.PACKAGE_PREFIX }}.${{ github.run_number }}'
-      run: |
-        octo pack --id="${{ env.SERVICE_NAME }}" --format="Zip" --version="${{ env.PACKAGE_V }}" --basePath="./LIC.Services.Reconciliation.Db2PollingService/bin/Release/net472" --outFolder="./packages"
-        octo push --package="./packages/${{ env.SERVICE_NAME }}.${{ env.PACKAGE_V }}.zip" --server="${{ secrets.OCTOPUS_SERVER }}" --apiKey="${{ secrets.OCTOPUS_DEPLOY_API_KEY }}"
+    # - name: Package for Octopus
+    #   env: 
+    #       PACKAGE_V: '${{ env.PACKAGE_PREFIX }}.${{ github.run_number }}'
+    #   run: |
+    #     octo pack --id="${{ env.SERVICE_NAME }}" --format="Zip" --version="${{ env.PACKAGE_V }}" --basePath="./LIC.Services.Reconciliation.Db2PollingService/bin/Release/net472" --outFolder="./packages"
+    #     octo push --package="./packages/${{ env.SERVICE_NAME }}.${{ env.PACKAGE_V }}.zip" --server="${{ secrets.OCTOPUS_SERVER }}" --apiKey="${{ secrets.OCTOPUS_DEPLOY_API_KEY }}"
       
-    - name: Create and Deploy Release
-      env: 
-          PACKAGE_V: '${{ env.PACKAGE_PREFIX }}.${{ github.run_number }}'
-      run: octo create-release --project="${{ env.OCTOPUS_PROJECT_NAME }}" --packageVersion="${{ env.PACKAGE_V }}" --releaseNumber="${{ env.PACKAGE_V }}" --server="${{ secrets.OCTOPUS_SERVER }}" --apiKey="${{ secrets.OCTOPUS_DEPLOY_API_KEY }}" --space="${{ env.OCTOPUS_SPACE_NAME }}" --deployTo="${{ env.OCTOPUS_ENVIRONMENT_NAME }}"
+    # - name: Create and Deploy Release
+    #   env: 
+    #       PACKAGE_V: '${{ env.PACKAGE_PREFIX }}.${{ github.run_number }}'
+    #   run: octo create-release --project="${{ env.OCTOPUS_PROJECT_NAME }}" --packageVersion="${{ env.PACKAGE_V }}" --releaseNumber="${{ env.PACKAGE_V }}" --server="${{ secrets.OCTOPUS_SERVER }}" --apiKey="${{ secrets.OCTOPUS_DEPLOY_API_KEY }}" --space="${{ env.OCTOPUS_SPACE_NAME }}" --deployTo="${{ env.OCTOPUS_ENVIRONMENT_NAME }}"
 
     
