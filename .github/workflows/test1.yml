@@ -5,22 +5,6 @@ jobs:
 #     runs-on: self-hosted
     runs-on: ubuntu-latest
     steps:
-    - name: echo 1
-      run: echo ${{ env.VAR_1 }}
-      env:
-        VAR_1: meh
+    - run: echo ${{ env.GITHUB_CONTEXT }}
 
-    - name: set VAR_2
-      run: |
-        echo ${{ env.VAR_2 }}
-        echo ::set-env name=VAR_2::"${{ env.VAR_2 }}"
-      env:
-        VAR_2: boom
-
-    - name: see VAR_2
-      run: echo ${{ env.VAR_2 }}
-
-    - name: again
-      run: |
-        BOOST_ROOT=${{ env.VAR_2 }}
-        echo ${BOOST_ROOT}
+    - run: echo ${GITHUB_CONTEXT}
