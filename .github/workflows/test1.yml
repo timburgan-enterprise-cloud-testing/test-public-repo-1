@@ -4,7 +4,7 @@ jobs:
   example_job:
     runs-on: ubuntu-latest
     steps:
-    - uses: timburganec/checkout
+    - uses: checkout
     - name: meh 
       run: echo "${{secrets.GITHUB_TOKEN}}"
     - name: boom
