@@ -1,22 +1,14 @@
 name: Example
 on: [push]
 jobs:
-  test-gen:
-    runs-on: ubuntu-latest
-    outputs:
-      matrix:  ${{steps.info.outputs.matrix}}
-    steps:
-    - name: Output
-      id: info
-      run: |
-        printf "::set-output name=%s::%s\n" "matrix"  "[]"
-
   test-mat:
     runs-on: ubuntu-latest
-    needs: test-gen
     strategy:
       matrix:
-        package-type: ${{fromJSON(needs.test-gen.outputs.matrix)}}
+        package-type:
+        - apk
+        exclude:
+        - package-type: 'apk'
 
     steps:
     - name: Parse
