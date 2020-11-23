@@ -7,12 +7,12 @@ jobs:
       matrix:
         package-type:
         - apk
-        - apt
         exclude:
         - package-type: 'apk'
 
     steps:
-    - name: Parse
+    - if: ${{matrix.package-type}} != ''
+      name: Parse
       shell: bash
       env:
         TYPE: ${{matrix.package-type}}
