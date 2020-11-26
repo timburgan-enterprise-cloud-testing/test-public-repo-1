@@ -1,21 +1,9 @@
 name: Example
 on: [push]
 jobs:
-  test-mat:
+  example_job:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        package-type:
-        - apk
-        - apt
-        exclude:
-        - package-type: 'apk'
-
     steps:
-    - if: ${{matrix.package-type}} == 'apk'
-      name: Parse
-      shell: bash
-      env:
-        TYPE: ${{matrix.package-type}}
-      run: |
-        echo TYPE is "'$TYPE'"
+    - uses: timburganec/checkout@v2
+    - name: meh 
+      run: echo "hi mum"
