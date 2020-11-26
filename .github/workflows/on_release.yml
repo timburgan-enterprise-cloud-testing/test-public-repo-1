@@ -8,6 +8,8 @@ jobs:
     if: github.event.release.target_commitish == 'master'
     steps:
     - uses: timburganec/checkout@v2
-    - env:
+      if: github.event.release.target_commitish == 'master'
+    - if: github.event.release.target_commitish == 'master'
+      env:
         GITHUB_CONTEXT: ${{ toJson(github) }}
       run: echo "$GITHUB_CONTEXT"
