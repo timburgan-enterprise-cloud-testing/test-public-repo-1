@@ -1,5 +1,7 @@
 on:
   release:
+    types: [released]
+    
 jobs:
   example_job:
     runs-on: ubuntu-latest
