@@ -5,7 +5,7 @@ on:
 jobs:
   example_job:
     runs-on: ubuntu-latest
-    if: ${{ github.event.release.target_commitish }} == 'master'
+    if: github.event.release.target_commitish == 'master'
     steps:
     - uses: timburganec/checkout@v2
     - env:
