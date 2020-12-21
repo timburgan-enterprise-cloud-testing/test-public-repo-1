@@ -1,6 +1,9 @@
 on:
   push:
     branches: [master]
+    paths:
+      - "anything-here/**"
+      - "!anything-here/except-here/**"
   pull_request_target:
 jobs:
   example_job:
