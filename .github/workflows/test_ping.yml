@@ -1,0 +1,6 @@
+on: push
+jobs:
+  test_job:
+    runs-on: ubuntu-latest
+    steps:
+      - run: ping -c 4 https://github.com/actions/setup-node/releases
