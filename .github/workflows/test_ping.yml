@@ -3,4 +3,4 @@ jobs:
   test_job:
     runs-on: ubuntu-latest
     steps:
-      - run: curl -o "tmp.txt" https://github.com/actions/setup-node/releases
+      - run: curl -v -o "tmp.txt" https://github.com/actions/setup-node/releases
