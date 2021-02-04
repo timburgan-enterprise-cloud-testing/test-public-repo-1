@@ -13,3 +13,7 @@ jobs:
     - uses: timburganec/checkout@v2
     - name: meh 
       run: echo "hi mum"
+  example_job2:
+    runs-on: windows-latest
+    steps:
+    - run: echo $HOME
