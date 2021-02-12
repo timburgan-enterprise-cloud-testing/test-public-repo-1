@@ -1,6 +1,9 @@
-on: push
+on:
+  pull_request_target:
+    branches: [ master ]
+    paths: test/**
 jobs:
   test_job:
     runs-on: ubuntu-latest
     steps:
-      - run: curl -v -o "tmp.txt" https://github.com/actions/setup-node/releases
+      - run: echo "heyhey"
