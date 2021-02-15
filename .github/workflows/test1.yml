@@ -1,16 +1,20 @@
-name: powershell
+name: bash
 on: push
-jobs:
-#   example_job:
-#     runs-on: ubuntu-latest
+  jobs:
+    example_job:
+      runs-on: ubuntu-latest
+      steps:
+      - uses: timburganec/checkout@v2
+      - name: meh 
+        shell: /usr/bin/bash
+        run: echo "hi mum"
+      - name: boom 
+        shell: /bin/bash
+        run: echo "hi mum"
+#   example_job2:
+#     runs-on: windows-latest
 #     steps:
-#     - uses: timburganec/checkout@v2
-#     - name: meh 
-#       run: echo "hi mum"
-  example_job2:
-    runs-on: windows-latest
-    steps:
-    - run: echo $HOME
-    - run: |
-        az version
-        echo $env:PSModulePath
+#     - run: echo $HOME
+#     - run: |
+#         az version
+#         echo $env:PSModulePath
