@@ -6,10 +6,10 @@ jobs:
     steps:
     - uses: timburganec/checkout@v2
     - name: meh 
-      shell: /usr/bin/bash
+      shell: /usr/bin/bash {0}
       run: echo "hi mum"
     - name: boom 
-      shell: /bin/bash
+      shell: bash
       run: echo "hi mum"
 #   example_job2:
 #     runs-on: windows-latest
