@@ -4,5 +4,6 @@ jobs:
   example_job:
     runs-on: ubuntu-latest
     steps:
-    - run: my_name_is=tim
     - run: echo "hi $my_name_is"
+      env:
+        my_name_is: tim
