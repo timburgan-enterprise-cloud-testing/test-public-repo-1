@@ -30,8 +30,7 @@ jobs:
         directory_was_changed='no'
         readarray -t changed_files <<<"$(echo '${{ steps.files_changed.outputs.data }}' | jq -r '. | map(.filename)')"
         for changed_file in ${changed_files[@]}; do
-          echo "tim $changed_file tim"
-          if [[ $changed_file =~ $directory_trigger ]]
+          if [[ $changed_file =~ "$directory_trigger" ]]
           then
             directory_was_changed='yes'
           fi
