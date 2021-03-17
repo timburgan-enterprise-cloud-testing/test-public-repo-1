@@ -22,7 +22,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
-    - run: echo "files: ${{ steps.files_changed.outputs.data }}"
+    - run: echo "files ${{ steps.files_changed.outputs.data }}"
       
 #     - name: Detect if anything-here was changed
 #       run: |
