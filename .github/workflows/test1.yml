@@ -21,23 +21,25 @@ jobs:
         route: GET /repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - id: files_detect
-      name: Detect if anything-here was changed
-      run: |
-        directory_trigger="anything-here/"
-        directory_was_changed='no'
-        readarray -t changed_files <<<"$(echo '${{ steps.files_changed.outputs.data }}' | jq -r '. | map(.filename)')"
-        for changed_file in ${changed_files[@]}; do
-          if [[ $changed_file =~ $directory_trigger ]]
-          then
-            directory_was_changed='yes'
-          fi
-        done
-        echo "directory_was_changed=${directory_was_changed}" >> $GITHUB_ENV
-        
-      # Run this step, only if the specified directory was changed in this PR.
-    - name: foo-service only change
-      if: success() && "${{ env.directory_was_changed }}" == "yes"
-      run: |
-        echo "Hello. anything-here only logic."
-        # add your code here...
+      
+    - run: "echo files: ${{ steps.files_changed.outputs.data }}"
+      
+#     - name: Detect if anything-here was changed
+#       run: |
+#         directory_trigger="anything-here/"
+#         directory_was_changed='no'
+#         readarray -t changed_files <<<"$(echo '${{ steps.files_changed.outputs.data }}' | jq -r '. | map(.filename)')"
+#         for changed_file in ${changed_files[@]}; do
+#           if [[ $changed_file =~ $directory_trigger ]]
+#           then
+#             directory_was_changed='yes'
+#           fi
+#         done
+#         echo "directory_was_changed=${directory_was_changed}" >> $GITHUB_ENV
+#
+#       # Run this step, only if the specified directory was changed in this PR.
+#     - name: foo-service only change
+#       if: success() && "${{ env.directory_was_changed }}" == "yes"
+#       run: |
+#         echo "Hello. anything-here only logic."
+#         # add your code here...
