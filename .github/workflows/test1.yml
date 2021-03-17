@@ -1,10 +1,43 @@
 name: bash
-on: push
+# on: push
+
+on: 
+  pull_request_target:
+    branches: [ master ]
+    paths: anything-here/**
+    
 jobs:
   example_job:
     runs-on: ubuntu-latest
     steps:
-    - run: my_name_is=yeah && echo "hi $my_name_is"
     - run: echo "hi $my_name_is"
       env:
         my_name_is: tim
+        
+    - id: files_changed
+      name: Get files changed
+      uses: octokit/request-action@v2.x
+      with:
+        route: GET /repos/${{ github.repository }}/pulls/${{ steps.find_pr.outputs.number }}/files
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - id: files_detect
+      name: Detect if anything-here was changed
+      run: |
+        directory_trigger="anything-here/"
+        directory_was_changed='no'
+        readarray -t changed_files <<<"$(echo '${{ steps.files_changed.outputs.data }}' | jq -r '. | map(.filename)')"
+        for changed_file in ${changed_files[@]}; do
+          if [[ $changed_file =~ $directory_trigger ]]
+          then
+            directory_was_changed='yes'
+          fi
+        done
+        echo "directory_was_changed=${directory_was_changed}" >> $GITHUB_ENV
+        
+      # Run this step, only if the specified directory was changed in this PR.
+    - name: foo-service only change
+      if: success() && "${{ env.directory_was_changed }}" == "yes"
+      run: |
+        echo "Hello. anything-here only logic."
+        # add your code here...
