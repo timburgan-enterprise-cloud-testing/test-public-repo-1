@@ -33,7 +33,6 @@ jobs:
         echo "directory_was_changed=${directory_was_changed}" >> $GITHUB_ENV
 
     - name: run only if specified directory changed
-      if: env.directory_was_changed == "yes"
+      if: env.directory_was_changed == 'yes'
       run: |
         echo "Hello. anything-here only logic."
-        # add your code here...
