@@ -4,7 +4,7 @@ name: bash
 on: 
   pull_request_target:
     branches: [ master ]
-    paths: anything-here/**
+    # paths: anything-here/**
     
 jobs:
   example_job:
