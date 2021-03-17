@@ -4,16 +4,11 @@ name: bash
 on: 
   pull_request_target:
     branches: [ master ]
-    # paths: anything-here/**
     
 jobs:
   example_job:
     runs-on: ubuntu-latest
     steps:
-    - run: echo "hi $my_name_is"
-      env:
-        my_name_is: tim
-        
     - id: files_changed
       name: Get files changed
       uses: octokit/request-action@v2.x
@@ -34,13 +29,11 @@ jobs:
           then
             directory_was_changed='yes'
           fi
-          echo $directory_was_changed
         done
         echo "directory_was_changed=${directory_was_changed}" >> $GITHUB_ENV
-#
-#       # Run this step, only if the specified directory was changed in this PR.
-#     - name: foo-service only change
-#       if: success() && "${{ env.directory_was_changed }}" == "yes"
-#       run: |
-#         echo "Hello. anything-here only logic."
-#         # add your code here...
+
+    - name: run only if specified directory changed
+      if: env.directory_was_changed == "yes"
+      run: |
+        echo "Hello. anything-here only logic."
+        # add your code here...
