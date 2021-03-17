@@ -30,11 +30,12 @@ jobs:
         directory_was_changed='no'
         readarray -t changed_files <<<"$(echo '${{ steps.files_changed.outputs.data }}' | jq -r '. | map(.filename)')"
         for changed_file in ${changed_files[@]}; do
-          echo "$changed_file"
+          echo "tim $changed_file tim"
           if [[ $changed_file =~ $directory_trigger ]]
           then
             directory_was_changed='yes'
           fi
+          echo $directory_was_changed
         done
         echo "directory_was_changed=${directory_was_changed}" >> $GITHUB_ENV
 #
