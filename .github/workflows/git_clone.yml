@@ -6,3 +6,4 @@ jobs:
     - run: |
         #git clone --single-branch --branch ${{ github.ref }} https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git .
         git clone https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git .
+        ls -l
