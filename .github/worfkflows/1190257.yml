@@ -1,0 +1,11 @@
+pull_request:
+    branches:
+    - master
+push:
+    branches:
+    - master
+jobs:
+  meh:
+    runs-on: ubuntu-latest
+    steps:
+    - run: echo "heya"
