@@ -1,0 +1,12 @@
+on:
+  pull_request:
+    branches:
+    - master
+  pull_request_review:
+    branches:
+    - master
+jobs:
+  meh:
+    runs-on: ubuntu-latest
+    steps:
+    - run: echo "heya"
