@@ -9,4 +9,8 @@ jobs:
   meh:
     runs-on: ubuntu-latest
     steps:
-    - run: echo "heya"
+    - run: |
+        echo "heya"
+        sleep 120s
+        echo "done"
+        
