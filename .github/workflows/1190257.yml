@@ -9,6 +9,7 @@ jobs:
   meh:
     runs-on: ubuntu-latest
     steps:
+    - uses: fkirc/skip-duplicate-actions@master
     - run: |
         echo "heya"
         sleep 120s
