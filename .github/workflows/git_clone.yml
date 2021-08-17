@@ -5,11 +5,11 @@ on:
   push:
     branches:
       - master
+  workflow_dispatch:
 jobs:
   example_job:
-    runs-on: ubuntu-latest
+    runs-on: macos-11
     steps:
-    - run: |
-        #git clone --single-branch --branch ${{ github.ref }} https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git .
-        git clone https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git .
-        ls -l
+    - run: sudo xcode-select -switch /Applications/Xcode_12.5.app
+    - run: open -Fn /Applications/Xcode_12.5.app/Contents/Developer/Applications/Simulator.app --args -CurrentDeviceUDID B438D67F-F837-4EDF-84A0-3F2EBC1D98ED
+    
