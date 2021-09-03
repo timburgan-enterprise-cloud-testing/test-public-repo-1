@@ -1,4 +1,4 @@
-name: master
+name: workflow_variable.yml
 env:
   appVersionCode: $(echo "TIMMAY")
 on: workflow_dispatch
