@@ -1,0 +1,9 @@
+name: master
+env:
+  appVersionCode: $(echo "TIMMAY")
+on: workflow_dispatch
+jobs:
+  boom:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "${appVersionCode}"
