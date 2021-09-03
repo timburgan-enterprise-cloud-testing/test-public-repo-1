@@ -1,9 +1,27 @@
-name: workflow_variable.yml
-env:
-  appVersionCode: $(echo "TIMMAY")
+
 on: workflow_dispatch
 jobs:
-  boom:
+
+  prepare:
     runs-on: ubuntu-latest
+    outputs:
+      appVersionCode: ${{ steps.step1.outputs.appVersionCode }}
     steps:
-      - run: echo "${appVersionCode}"
+    - id: step1
+      run: echo "::set-output name=appVersionCode::$(echo 'TIMMAY')"
+
+  job2:
+    runs-on: ubuntu-latest
+    needs: prepare
+    steps:
+      - run: echo "Job 2"
+      - run: echo "${{ needs.prepare.outputs.appVersionCode }}"
+
+  job3:
+    runs-on: ubuntu-latest
+    needs: prepare
+    container:
+      image: ${{ needs.prepare.outputs.image_name }}
+    steps:
+      - run: echo "Job 3"
+      - run: echo "${{ needs.prepare.outputs.appVersionCode }}"
