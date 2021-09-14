@@ -3,4 +3,4 @@ jobs:
   echoer:
     runs-on: ubuntu-latest
     steps:
-    - uses: timburganec/.github/.github/workflows/echo.yml
+    - uses: timburganec/.github/.github/workflows/echo.yml@master
