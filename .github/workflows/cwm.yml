@@ -1,0 +1,6 @@
+on: [workflow_dispatch]
+jobs:
+  echoer:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: timburganec/.github/.github/workflows/echo.yml@main
