@@ -1,4 +1,4 @@
 on: [workflow_dispatch]
 jobs:
   echoer:
-    - uses: timburganec/cmw/echo.yml@main
+    - uses: timburganec/cmw/.github/workflows/echo.yml@main
