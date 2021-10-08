@@ -1,0 +1,15 @@
+on: workflow_dispatch
+name: multi-job
+jobs:
+  one:
+    runs-on: ubuntu-latest
+    steps:
+    - run: echo "one"
+  two:
+    runs-on: ubuntu-latest
+    steps:
+    - run: echo "two"
+  three:
+    runs-on: ubuntu-latest
+    steps:
+    - run: echo "three"
