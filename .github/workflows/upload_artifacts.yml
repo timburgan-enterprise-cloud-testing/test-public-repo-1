@@ -1,0 +1,13 @@
+on: workflow_dispatch
+jobs:
+  artifacter:
+    runs-on: ubuntu_latest
+    environment: require approval
+    steps:
+    - run: echo hello > my_artifact.txt
+    - uses: actions/upload-artifact@v2
+      with:
+        name: my_artifact
+        path: my_artifact.txt
+    - uses: my_artifact.txt
+    
