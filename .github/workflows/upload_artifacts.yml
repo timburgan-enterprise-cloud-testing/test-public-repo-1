@@ -10,5 +10,3 @@ jobs:
       with:
         name: my_artifact
         path: my_artifact.txt
-    - uses: my_artifact.txt
-    
