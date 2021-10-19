@@ -1,8 +1,8 @@
 name: artifact approvals
 on: workflow_dispatch
 jobs:
-  artifacter:
-    runs-on: ubuntu_latest
+  job:
+    runs-on: ubuntu-latest
     environment: require approval
     steps:
     - run: echo hello > my_artifact.txt
