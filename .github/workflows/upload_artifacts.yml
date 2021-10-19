@@ -1,3 +1,4 @@
+name: artifact approvals
 on: workflow_dispatch
 jobs:
   artifacter:
