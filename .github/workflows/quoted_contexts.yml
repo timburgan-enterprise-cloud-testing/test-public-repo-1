@@ -4,12 +4,12 @@ jobs:
   first:
     runs-on: ubuntu-latest
     steps:
-    - run: echo $INPUT_IMAGE_NAME
+    - uses: actions/checkout@v2
       with: 
         image-name: ghcr.io/${{ github.repository }}/${{ github.event.repository.id }}:latest
   second:
     runs-on: ubuntu-latest
     steps:
-    - run: echo $INPUT_IMAGE_NAME
+    - uses: actions/checkout@v2
       with: 
         image-name: 'ghcr.io/${{ github.repository }}/${{ github.event.repository.id }}:latest'
