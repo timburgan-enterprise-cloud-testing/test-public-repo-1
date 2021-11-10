@@ -1,0 +1,12 @@
+on: workflow_dispatch
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+        # authenticates using GITHUB_TOKEN
+      - uses: actions/checkout@v2
+        # push to Github
+      - run: echo "could do something here using GITHUB_TOKEN, ie push to GitHub"
+        # authenticate using PAT to tag commit
+      - run: echo "${{ secrets.PAT }}" | gh auth login --with-token
+      - run: gh release create v21.10.199.0
