@@ -1,3 +1,4 @@
+name: tag_commit
 on: workflow_dispatch
 jobs:
   test:
