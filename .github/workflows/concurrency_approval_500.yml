@@ -3,7 +3,9 @@ on: workflow_dispatch
 jobs:
   prod-infraconcurrency_approval_500gke-apply:
     environment: require approval
-    concurrency: concurrency_approval_500
+    concurrency: 
+      group: concurrency_approval_500
+      cancel-in-progress: true
     runs-on: ubuntu-latest
     steps:
       - run: |
