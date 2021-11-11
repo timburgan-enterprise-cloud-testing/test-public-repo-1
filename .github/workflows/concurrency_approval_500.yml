@@ -5,7 +5,7 @@ jobs:
     environment: require approval
     concurrency: 
       group: concurrency_approval_500
-      cancel-in-progress: true
+      # cancel-in-progress: true
     runs-on: ubuntu-latest
     steps:
       - run: |
