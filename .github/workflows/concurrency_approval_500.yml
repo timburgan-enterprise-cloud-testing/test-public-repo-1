@@ -1,0 +1,14 @@
+name: concurrency_approval_500
+on: workflow_dispatch
+jobs:
+  prod-infra-gke-apply:
+    environment:
+      name: 'requires approval'
+    concurrency: concurrency_approval_500
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "start"
+          sleep 120
+          echo "end"
+          
