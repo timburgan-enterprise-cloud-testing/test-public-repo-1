@@ -1,9 +1,8 @@
 name: concurrency_approval_500
 on: workflow_dispatch
 jobs:
-  prod-infra-gke-apply:
-    environment:
-      name: 'requires approval'
+  prod-infraconcurrency_approval_500gke-apply:
+    environment: require approval
     concurrency: concurrency_approval_500
     runs-on: ubuntu-latest
     steps:
