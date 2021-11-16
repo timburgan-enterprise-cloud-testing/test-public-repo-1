@@ -1,7 +1,15 @@
 name: concurrency_approval_500
 on: workflow_dispatch
 jobs:
+  first:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "start"
+          sleep 120
+          echo "end"
   prod-infraconcurrency_approval_500gke-apply:
+    needs: first
     environment: require approval
     concurrency: 
       group: concurrency_approval_500
