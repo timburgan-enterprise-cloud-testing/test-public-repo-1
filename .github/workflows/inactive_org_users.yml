@@ -1,7 +1,6 @@
+
 name: inactive org users
-on: 
-  schedule:
-    - cron:  '0 0 * * 0'
+on: [workflow_dispatch]
 jobs:
   inactive_users:
     runs-on: ubuntu-latest
