@@ -14,4 +14,5 @@ jobs:
           repository: github/platform-samples
       - run: cd api/ruby/find-inactive-members
       - run: sudo gem install octokit # -N --silent
+      - run: ls -la
       - run: ruby find_inactive_members.rb --check --email --verbose -o ${{ github.repository_owner }} -d FROM_DATE
