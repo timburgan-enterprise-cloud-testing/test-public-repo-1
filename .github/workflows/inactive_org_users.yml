@@ -1,4 +1,3 @@
-
 name: inactive org users
 on: [workflow_dispatch]
 jobs:
@@ -15,4 +14,4 @@ jobs:
       - run: ls -la
       - run: |
           cd api/ruby/find-inactive-members
-          ruby find_inactive_members.rb --email --verbose -o ${{ github.repository_owner }} -d $FROM_DATE
+          ruby find_inactive_members.rb --email --organization ${{ github.repository_owner }} --date $FROM_DATE
