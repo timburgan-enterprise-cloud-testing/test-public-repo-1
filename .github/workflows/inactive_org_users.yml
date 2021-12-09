@@ -1,3 +1,4 @@
+name: inactive org users
 on: [workflow_dispatch]
 jobs:
   inactive_users:
