@@ -1,5 +1,5 @@
 name: cant cancel 2nd job
-on: [workflow_dispatch]
+on: workflow_dispatch
 jobs:
   job1:
     runs-on: ubuntu-latest
@@ -7,11 +7,11 @@ jobs:
       - run: echo "started"
       - run: sleep 120
       - run: echo "ended"
-   job2:
-     needs: job1
-     if: ${{ always() }}
-     runs-on: ubuntu-latest
-     steps:
-       - run: echo "started"
-       - run: sleep 120
-       - run: echo "ended"
+  job2:
+    needs: job1
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "started"
+      - run: sleep 120
+      - run: echo "ended"
