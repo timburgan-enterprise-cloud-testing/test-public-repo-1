@@ -2,7 +2,7 @@ name: exit early
 on: workflow_dispatch
 jobs:
   early:
-    runs_on: ubuntu_latest
+    runs-on: ubuntu_latest
     steps:
       - name: first
         run: |
