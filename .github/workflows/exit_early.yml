@@ -1,0 +1,14 @@
+name: exit early
+on: workflow_dispatch
+jobs:
+  early:
+    runs_on: ubuntu_latest
+    steps:
+      - name: first
+        run: |
+          echo "1"
+          exit 0
+          echo "2 - this shouldn't be seen"
+      - name: second
+        run: |
+          echo "this shouldn't run"
