@@ -2,6 +2,7 @@ name: GitHub CLI
 on: workflow_dispatch
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  GH_REPO: ${{ github.repository }}
 jobs:
   cli:
     runs-on: ubuntu-latest
