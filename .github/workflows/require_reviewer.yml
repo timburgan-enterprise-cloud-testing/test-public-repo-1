@@ -1,4 +1,4 @@
-name: 'Check board approveal'
+name: 'Is review approval from board?'
 
 on: 
   pull_request_review:
@@ -10,12 +10,12 @@ env:
   REQUIRED_TEAM_SLUG: team1
 
 jobs:
-  check_approved:
+  check:
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request_review' && github.event.review.state == 'approved'
     steps:
       - run: |
-          sec -xe
+          set -xe
 
           # check if the approver is in the desired team by using the GitHub CLI cli.github.com 
           # to call the API endpoint https://docs.github.com/en/rest/reference/teams#list-team-members
