@@ -22,7 +22,7 @@ jobs:
 
           echo "${{ secrets.ORG_OWNER_PAT }}" | gh auth login --with-token
           set -xe
-          gh api /orgs/${{ github.repository_owner }}/teams/$REQUIRED_TEAM_SLUG/members | jq -r '.login' > team_members
+          gh api /orgs/${{ github.repository_owner }}/teams/$REQUIRED_TEAM_SLUG/members | jq -r '.[].login' > team_members
           cat team_members
 
           if ! grep -qxF ${{ github.event.review.user.login }} team_members; then
