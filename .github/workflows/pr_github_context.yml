@@ -1,8 +1,0 @@
-name: pr_github_context
-on: pull_request
-jobs:
-  context:
-    runs-on: ubuntu-latest
-    steps:
-      - run: |
-          echo "${{ fromJSON(github) }}"
