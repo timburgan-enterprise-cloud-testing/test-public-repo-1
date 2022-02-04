@@ -1,0 +1,27 @@
+name: 'Check board approveal'
+
+on: 
+  pull_request_review:
+    types: [submitted]
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  GH_REPO: ${{ github.repository }}
+  REQUIRED_TEAM_SLUG: team1
+
+jobs:
+  check_approved:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request_review' && github.event.review.state == 'approved'
+    steps:
+      - run: |
+        sec -xe
+
+        # check if the approver is in the desired team by using the GitHub CLI cli.github.com 
+        # to call the API endpoint https://docs.github.com/en/rest/reference/teams#list-team-members
+        gh api /orgs/${{ github.repository_owner }}/teams/$REQUIRED_TEAM_SLUG/members | jq -r '.login' > team_members
+
+        if ! grep -qxF ${{ github.event.review.user.login }} team_members; then
+          echo 'Reviewer is not an approver for the required team.'
+          exit 1
+        fi
