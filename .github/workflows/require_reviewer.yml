@@ -15,11 +15,16 @@ jobs:
     if: github.event_name == 'pull_request_review' && github.event.review.state == 'approved'
     steps:
       - run: |
-          set -xe
 
           # check if the approver is in the desired team by using the GitHub CLI cli.github.com 
           # to call the API endpoint https://docs.github.com/en/rest/reference/teams#list-team-members
+
+          # To list members in a team, the team must be visible to the authenticated user.
+
+          echo "${{ secrets.ORG_OWNER_PAT }}" | gh auth login --with-token
+          set -xe
           gh api /orgs/${{ github.repository_owner }}/teams/$REQUIRED_TEAM_SLUG/members | jq -r '.login' > team_members
+          cat team_members
 
           if ! grep -qxF ${{ github.event.review.user.login }} team_members; then
             echo 'Reviewer is not an approver for the required team.'
