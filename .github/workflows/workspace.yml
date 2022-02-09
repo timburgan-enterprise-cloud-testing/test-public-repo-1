@@ -1,0 +1,9 @@
+name: workspace
+on: workflow_dispatch
+jobs:
+  job:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo $RUNNER_WORKSPACE
+          ls -la $RUNNER_WORKSPACE
