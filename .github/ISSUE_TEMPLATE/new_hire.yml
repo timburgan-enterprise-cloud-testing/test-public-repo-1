@@ -13,26 +13,26 @@ body:
       label: New Hire handle
     validations:
       required: true
-- type: checkboxes
-  id: target
-  attributes:
-    label: Where should the repository be created?
-    options:
-      - label: GitHub.com
-      - label: ghe.io
-    validations:
-      required: true
-- type: checkboxes
-  id: target
-  attributes:
-    label: What role does new hire have? (closest fit - pick only one)
-    options:
-      - label: Support Engineer - Security and Revenue
-      - label: Support Engineer - Technical Support
-      - label: Support Engineer - Enterprise Support
-      - label: Support Engineer - Premium Support
-      - label: Support Engineer - Customer Reliability Engineer
-      - label: Support Engineer - GHAE
-      - label: Support Contractors
-    validations:
-      required: true
+  - type: checkboxes
+    id: target
+    attributes:
+      label: Where should the repository be created?
+      options:
+        - label: GitHub.com
+        - label: ghe.io
+      validations:
+        required: true
+  - type: checkboxes
+    id: target
+    attributes:
+      label: What role does new hire have? (closest fit - pick only one)
+      options:
+        - label: Support Engineer - Security and Revenue
+        - label: Support Engineer - Technical Support
+        - label: Support Engineer - Enterprise Support
+        - label: Support Engineer - Premium Support
+        - label: Support Engineer - Customer Reliability Engineer
+        - label: Support Engineer - GHAE
+        - label: Support Contractors
+      validations:
+        required: true
