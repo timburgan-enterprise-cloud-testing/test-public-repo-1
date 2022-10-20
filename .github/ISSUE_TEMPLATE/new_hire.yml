@@ -20,10 +20,8 @@ body:
       options:
         - label: GitHub.com
         - label: ghe.io
-      validations:
-        required: true
   - type: checkboxes
-    id: target
+    id: role
     attributes:
       label: What role does new hire have? (closest fit - pick only one)
       options:
@@ -34,5 +32,4 @@ body:
         - label: Support Engineer - Customer Reliability Engineer
         - label: Support Engineer - GHAE
         - label: Support Contractors
-      validations:
-        required: true
+        - label: Support Managers
