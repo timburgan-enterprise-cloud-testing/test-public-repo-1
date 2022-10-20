@@ -21,7 +21,7 @@ body:
         - label: github.com/github/onboarding-[handle]
         - label: ghe.io/new-hires/[handle]
   - type: checkboxes
-    id: target
+    id: role
     attributes:
       label: What role does new hire have? (closest fit - pick only one)
       options:
