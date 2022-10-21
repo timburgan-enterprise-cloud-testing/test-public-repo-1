@@ -4,15 +4,44 @@ on:
     types:
       - created
 jobs:
-  if: contains(github.event.issue.labels.*.name, 'new-hire')
-  one:
+  parse:
+    if: contains(github.event.issue.labels.*.name, 'new-hire')
     runs-on: ubuntu-latest
     steps:
-    - name: validate the form
-      run: |
-        # going to have to hard-code fields to see which is checked.
-        # ...
-        ${{github.event.issue.body}}
+    # target handle
+    - run: |
+      HANDLE_RAW=$(echo "${{ github.event.issue.body }}" | grep -A2 '### New Hire handle (without @)')
+      HANDLE_RAW=$(echo "=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'<<<"${HANDLE_RAW}")=")
+      run: echo "TARGET_HANDLE=$HANDLE_RAW" >> $GITHUB_ENV
+    # target host - for now, this is crude, use the latest checkbox selected if the user for some reason selected multiple
+    - if: contains(github.event.issue.body, '- [X] github.com/github/support-onboarding-[handle]')
+      run: echo "TARGET_HOST=github.com" >> $GITHUB_ENV
+    - if: contains(github.event.issue.body, '- [X] ghe.io/new-hires/[handle]')
+      run: echo "TARGET_HOST=ghe.io" >> $GITHUB_ENV
+    # target team - for now, this is crude, use the latest checkbox selected if the user for some reason selected multiple
+    - if: contains(github.event.issue.body, '- [X] Support Engineer - Security and Revenue')
+      run: echo "TARGET_TEAM=accounts-support-specialists" >> $GITHUB_ENV
+    - if: contains(github.event.issue.body, '- [X] Support Engineer - Technical Support')
+      run: echo "TARGET_TEAM=technical-support-engineers" >> $GITHUB_ENV
+    - if: contains(github.event.issue.body, '- [X] Support Engineer - Enterprise Support')
+      run: echo "TARGET_TEAM=enterprise-support-engineers" >> $GITHUB_ENV
+    - if: contains(github.event.issue.body, '- [X] Support Engineer - Premium Support')
+      run: echo "TARGET_TEAM=premium-support-engineers" >> $GITHUB_ENV
+    - if: contains(github.event.issue.body, '- [X] Support Engineer - Customer Reliability Engineer')
+      run: echo "TARGET_TEAM=customer-reliability-engineers" >> $GITHUB_ENV
+    - if: contains(github.event.issue.body, '- [X] Support Engineer - GHAE')
+      run: echo "TARGET_TEAM=ghae-support-engineers" >> $GITHUB_ENV
+    - if: contains(github.event.issue.body, '- [X] Support Contractors')
+      run: echo "TARGET_TEAM=support-contractors" >> $GITHUB_ENV
+  validate:
+    if: contains(github.event.issue.labels.*.name, 'new-hire')
+    needs: parse
+    runs-on: ubuntu-latest
+  execute:
+    if: contains(github.event.issue.labels.*.name, 'new-hire')
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
     - name: get onboarder-next
       uses: actions/checkout@v3
       with:
@@ -29,3 +58,5 @@ jobs:
       run: ./script/bootstrap
     - name: deploy
       run: rake bootstrap
+    - run: Add user to org
+    - run: Add buddy to org
