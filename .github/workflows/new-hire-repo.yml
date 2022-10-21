@@ -9,7 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: validate the form
-      run: echo "meh"
+      run: |
+        # going to have to hard-code fields to see which is checked.
+        # ...
+        ${{github.event.issue.body}}
     - name: get onboarder-next
       uses: actions/checkout@v3
       with:
@@ -20,7 +23,8 @@ jobs:
         ruby-version: '3.1'
         bundler-cache: true
     - name: edit config/settings.yml with the values within the issue
-      run: 
+      run: |
+        # ...
     - name: prepare to run
       run: ./script/bootstrap
     - name: deploy
