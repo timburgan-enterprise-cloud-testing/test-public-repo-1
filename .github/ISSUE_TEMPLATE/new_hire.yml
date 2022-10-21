@@ -18,7 +18,7 @@ body:
     attributes:
       label: Where should the repository be created?
       options:
-        - label: github.com/github/onboarding-[handle]
+        - label: github.com/github/support-onboarding-[handle]
         - label: ghe.io/new-hires/[handle]
   - type: checkboxes
     id: role
