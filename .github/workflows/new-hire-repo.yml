@@ -1,0 +1,27 @@
+name: Create repository for New Hire 
+on:
+  issues:
+    types:
+      - created
+jobs:
+  if: contains(github.event.issue.labels.*.name, 'new-hire')
+  one:
+    runs-on: ubuntu-latest
+    steps:
+    - name: validate the form
+      run: echo "meh"
+    - name: get onboarder-next
+      uses: actions/checkout@v3
+      with:
+        repository: github/onboarder-next
+    - name: setup ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.1'
+        bundler-cache: true
+    - name: edit config/settings.yml with the values within the issue
+      run: 
+    - name: prepare to run
+      run: ./script/bootstrap
+    - name: deploy
+      run: rake bootstrap
