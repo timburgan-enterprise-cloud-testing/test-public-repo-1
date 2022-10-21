@@ -17,14 +17,15 @@ body:
     id: target
     attributes:
       label: Where should the repository be created?
+      required: true
       options:
         - label: github.com/github/support-onboarding-[handle]
         - label: ghe.io/new-hires/[handle]
-          required: true
   - type: checkboxes
     id: role
     attributes:
       label: What role does new hire have? (closest fit - pick only one)
+      required: true
       options:
         - label: Support Engineer - Security and Revenue
         - label: Support Engineer - Technical Support
@@ -33,4 +34,3 @@ body:
         - label: Support Engineer - Customer Reliability Engineer
         - label: Support Engineer - GHAE
         - label: Support Contractors
-          required: true
