@@ -20,6 +20,7 @@ body:
       options:
         - label: github.com/github/support-onboarding-[handle]
         - label: ghe.io/new-hires/[handle]
+        - required: true
   - type: checkboxes
     id: role
     attributes:
@@ -32,3 +33,4 @@ body:
         - label: Support Engineer - Customer Reliability Engineer
         - label: Support Engineer - GHAE
         - label: Support Contractors
+        - required: true
