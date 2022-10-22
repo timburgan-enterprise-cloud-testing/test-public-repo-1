@@ -1,62 +1,87 @@
+# The approach used here needs to crudely parse the Issue body content. It would be nice is Issue Forms made the 
+# data available in machine accessible formats, but alas it doesn't :(
+
 name: Create repository for New Hire 
 on:
   issues:
     types:
       - created
 jobs:
-  parse:
+  new_hire:
     if: contains(github.event.issue.labels.*.name, 'new-hire')
+    name: new hire repo
     runs-on: ubuntu-latest
     steps:
     # target handle
-    - run: |
-      HANDLE_RAW=$(echo "${{ github.event.issue.body }}" | grep -A2 '### New Hire handle (without @)')
-      HANDLE_RAW=$(echo "=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'<<<"${HANDLE_RAW}")=")
-      run: echo "TARGET_HANDLE=$HANDLE_RAW" >> $GITHUB_ENV
+      - name: "Parse: TARGET_HANDLE"
+        run: |
+        HANDLE_RAW=$(echo "${{ github.event.issue.body }}" | grep -A2 '### New Hire handle (without @)')
+        HANDLE_RAW=$(echo "=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'<<<"${HANDLE_RAW}")=")
+        run: echo "TARGET_HANDLE=$HANDLE_RAW" >> $GITHUB_ENV
     # target host - for now, this is crude, use the latest checkbox selected if the user for some reason selected multiple
-    - if: contains(github.event.issue.body, '- [X] github.com/github/support-onboarding-[handle]')
-      run: echo "TARGET_HOST=github.com" >> $GITHUB_ENV
-    - if: contains(github.event.issue.body, '- [X] ghe.io/new-hires/[handle]')
-      run: echo "TARGET_HOST=ghe.io" >> $GITHUB_ENV
+      - name: "Parse: TARGET_HOST github.com"
+        if: contains(github.event.issue.body, '- [X] github.com/github/support-onboarding-[handle]')
+        run: echo "TARGET_HOST=github.com" >> $GITHUB_ENV
+      - name: "Parse: TARGET_HOST ghe.io"
+        if: contains(github.event.issue.body, '- [X] ghe.io/new-hires/[handle]')
+        run: echo "TARGET_HOST=ghe.io" >> $GITHUB_ENV
     # target team - for now, this is crude, use the latest checkbox selected if the user for some reason selected multiple
-    - if: contains(github.event.issue.body, '- [X] Support Engineer - Security and Revenue')
-      run: echo "TARGET_TEAM=accounts-support-specialists" >> $GITHUB_ENV
-    - if: contains(github.event.issue.body, '- [X] Support Engineer - Technical Support')
-      run: echo "TARGET_TEAM=technical-support-engineers" >> $GITHUB_ENV
-    - if: contains(github.event.issue.body, '- [X] Support Engineer - Enterprise Support')
-      run: echo "TARGET_TEAM=enterprise-support-engineers" >> $GITHUB_ENV
-    - if: contains(github.event.issue.body, '- [X] Support Engineer - Premium Support')
-      run: echo "TARGET_TEAM=premium-support-engineers" >> $GITHUB_ENV
-    - if: contains(github.event.issue.body, '- [X] Support Engineer - Customer Reliability Engineer')
-      run: echo "TARGET_TEAM=customer-reliability-engineers" >> $GITHUB_ENV
-    - if: contains(github.event.issue.body, '- [X] Support Engineer - GHAE')
-      run: echo "TARGET_TEAM=ghae-support-engineers" >> $GITHUB_ENV
-    - if: contains(github.event.issue.body, '- [X] Support Contractors')
-      run: echo "TARGET_TEAM=support-contractors" >> $GITHUB_ENV
-  validate:
-    if: contains(github.event.issue.labels.*.name, 'new-hire')
-    needs: parse
-    runs-on: ubuntu-latest
-  execute:
-    if: contains(github.event.issue.labels.*.name, 'new-hire')
-    needs: validate
-    runs-on: ubuntu-latest
-    steps:
-    - name: get onboarder-next
+      - name: "Parse: TARGET_TEAM S&R"
+        if: contains(github.event.issue.body, '- [X] Support Engineer - Security and Revenue')
+        run: echo "TARGET_TEAM=accounts-support-specialists" >> $GITHUB_ENV
+      - name: "Parse: TS"
+        if: contains(github.event.issue.body, '- [X] Support Engineer - Technical Support')
+        run: echo "TARGET_TEAM=technical-support-engineers" >> $GITHUB_ENV
+      - name: "Parse: ES"
+        if: contains(github.event.issue.body, '- [X] Support Engineer - Enterprise Support')
+        run: echo "TARGET_TEAM=enterprise-support-engineers" >> $GITHUB_ENV
+      - name: "Parse: PS"
+        if: contains(github.event.issue.body, '- [X] Support Engineer - Premium Support')
+        run: echo "TARGET_TEAM=premium-support-engineers" >> $GITHUB_ENV
+      - name: "Parse: CRE"
+        if: contains(github.event.issue.body, '- [X] Support Engineer - Customer Reliability Engineer')
+        run: echo "TARGET_TEAM=customer-reliability-engineers" >> $GITHUB_ENV
+      - name: "Parse: GHAE"
+        if: contains(github.event.issue.body, '- [X] Support Engineer - GHAE')
+        run: echo "TARGET_TEAM=ghae-support-engineers" >> $GITHUB_ENV
+      - name: "Parse: SC"
+        if: contains(github.event.issue.body, '- [X] Support Contractors')
+        run: echo "TARGET_TEAM=support-contractors" >> $GITHUB_ENV
+    - name: "Validate: Is TARGET_HANDLE set?"
+      run: |
+        if [[ -z "${TARGET_HANDLE}" ]]; then
+          gh issue comment "Deployment Error: new-hire's handle appears to be blank in the issue body above. Please edit the body, and the deployment will retry."
+          exit 1
+        fi
+    - name: "Validate: Is TARGET_HOST set?"
+      run: |
+        if [[ -z "${TARGET_HOST}" ]]; then
+          gh issue comment "Deployment Error: 'Where should the repository be created?' appears to be blank in the issue body above. Please edit the body, and the deployment will retry."
+          exit 1
+        fi
+    - name: "Validate: Is TARGET_TEAM set?"
+      run: |
+        if [[ -z "${TARGET_TEAM}" ]]; then
+          gh issue comment "Deployment Error: 'What role does new hire have?' appears to be blank in the issue body above. Please edit the body, and the deployment will retry."
+          exit 1
+        fi
+    - name: "Deploy: get onboarder-next"
       uses: actions/checkout@v3
       with:
         repository: github/onboarder-next
-    - name: setup ruby
+    - name: "Deploy: setup ruby"
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: '3.1'
         bundler-cache: true
-    - name: edit config/settings.yml with the values within the issue
+    - name: Deploy: edit config/settings.yml with the values within the issue
       run: |
         # ...
-    - name: prepare to run
+    - name: "Deploy: prepare to run"
       run: ./script/bootstrap
-    - name: deploy
+    - name: "Deploy: Executing"
       run: rake bootstrap
-    - run: Add user to org
-    - run: Add buddy to org
+    - name: "Access: Add user to org"
+      run: # Add user to org
+    - name: "Access: Add buddy to org"
+      run: # Add buddy to org
