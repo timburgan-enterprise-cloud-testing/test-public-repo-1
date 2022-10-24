@@ -21,12 +21,12 @@ jobs:
     # target handle
       - name: "Parse: TARGET_HANDLE"
         run: |
-        HANDLE_RAW=$(echo "${{ github.event.issue.body }}" | grep -A2 '### New Hire handle (without @)')
-        HANDLE_RAW=$(echo "=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'<<<"${HANDLE_RAW}")=")
-        run: echo "TARGET_HANDLE=$HANDLE_RAW" >> $GITHUB_ENV
+          HANDLE_RAW=$(echo "${{ github.event.issue.body }}" | grep -A2 '### New Hire handle (without @)')
+          HANDLE_RAW=$(echo "=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'<<<"${HANDLE_RAW}")=")
+          run: echo "TARGET_HANDLE=$HANDLE_RAW" >> $GITHUB_ENV
     # target host - for now, this is crude, use the latest checkbox selected if the user for some reason selected multiple
       - name: "Parse: TARGET_HOST DotCom"
-        if: contains(github.event.issue.body, '- [X] DotCom: github.com/github/support-onboarding-[handle]')
+        if: contains(github.event.issue.body, '- [X] DotCom - github.com/github/support-onboarding-[handle]')
         run: |
           echo "TARGET_HOST=https://github.com" >> $GITHUB_ENV
           echo "TARGET_API=https://api.github.com/" >> $GITHUB_ENV
@@ -34,7 +34,7 @@ jobs:
           echo "TARGET_PUBLIC_VISIBILITY=false" >> $GITHUB_ENV
           echo "TARGET_TOKEN=${{ secrets.NEWHIRE_SECRET_DOTCOM_TIMBURGAN }}" >> $GITHUB_ENV
       - name: "Parse: TARGET_HOST GHES"
-        if: contains(github.event.issue.body, '- [X] GHES: ghe.io/new-hires/[handle]')
+        if: contains(github.event.issue.body, '- [X] GHES - ghe.io/new-hires/[handle]')
         run: |
           echo "TARGET_HOST=https://ghe.io" >> $GITHUB_ENV
           echo "TARGET_API=https://ghe.io/api/v3/" >> $GITHUB_ENV
@@ -42,7 +42,7 @@ jobs:
           echo "TARGET_PUBLIC_VISIBILITY=true" >> $GITHUB_ENV
           echo "TARGET_TOKEN=${{ secrets.NEWHIRE_SECRET_GHES_TIMBURGAN }}" >> $GITHUB_ENV
       - name: "Parse: TARGET_HOST GHAE"
-        if: contains(github.event.issue.body, '- [X] GHAE: github.ghe.com/new-hires/[handle]')
+        if: contains(github.event.issue.body, '- [X] GHAE - github.ghe.com/new-hires/[handle]')
         run: |
           echo "TARGET_HOST=https://github.ghe.com" >> $GITHUB_ENV
           echo "TARGET_API=https://github.ghe.com/api/v3/" >> $GITHUB_ENV
@@ -76,55 +76,55 @@ jobs:
       - name: "Parse: SC"
         if: contains(github.event.issue.body, '- [X] Support Contractors')
         run: echo "TARGET_TEAM=support-contractors" >> $GITHUB_ENV
-    - name: "Validate: Is TARGET_HANDLE set?"
-      run: |
-        if [[ -z "${TARGET_HANDLE}" ]]; then
-          gh issue comment $ISSUE --body "@${{ github.actor }} Deployment Error: new-hire's handle appears to be blank in the issue body above. Please edit the body, and the deployment will retry."
-          exit 1
-        fi
-    - name: "Validate: Is TARGET_HOST set?"
-      run: |
-        if [[ -z "${TARGET_HOST}" ]]; then
-          gh issue comment $ISSUE --body "@${{ github.actor }} Deployment Error: 'Where should the repository be created?' appears to be blank in the issue body above. Please edit the body, and the deployment will retry."
-          exit 1
-        fi
-    - name: "Validate: Is TARGET_TEAM set?"
-      run: |
-        if [[ -z "${TARGET_TEAM}" ]]; then
-          gh issue comment $ISSUE --body "@${{ github.actor }} Deployment Error: 'What role does new hire have?' appears to be blank in the issue body above. Please edit the body, and the deployment will retry."
-          exit 1
-        fi
-    - name: "Deploy: get onboarder-next"
-      uses: actions/checkout@v3
-      with:
-        repository: github/onboarder-next
-    - name: "Deploy: setup ruby"
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: '3.1'
-        bundler-cache: true
-    - name: Deploy: Update issue with progreess
-      run: |
-        # gh issue comment $ISSUE --body
-    - name: Deploy: edit config/settings.yml with the values within the issue
-      run: |
-        mv config/settings.orig.yml config/settings.yml
-        sed -i -- "s|  api_endpoint: https://ghe.io/api/v3/|  api_endpoint: $TARGET_API|g" config/settings.yml
-        sed -i -- "s|  web_endpoint: https://ghe.io|  web_endpoint: $TARGET_WEB|g" config/settings.yml
-        sed -i -- "s|  username: [username]|  username: timburgan|g" config/settings.yml
-        sed -i -- "s|  oauth_token: [token]|  oauth_token: $TARGET_TOKEN}|g" config/settings.yml
-        sed -i -- "s|  organization: new-hires|  organization: $TARGET_ORG|g" config/settings.yml
-        sed -i -- "s|  department: [enterprise-support-engineers|technical-support-engineers|security-support-engineers|customer-reliability-engineers|premium-support-engineers]|  department: $TARGET_TEAM|g" config/settings.yml
-        sed -i -- "s|    name: "John Doe"|    name: "@$TARGET_HANDLE"|g" config/settings.yml
-        sed -i -- "s|    email: "john.doe@github.com"|    email: "$TARGET_HANDLE@github.com"|g" config/settings.yml
-        sed -i -- "s|    job_title: "Enterprise|Technical|Premium|Security Support Engineer|Account Manager"|    job_title: "Support Engineer"|g" config/settings.yml
-    - name: "Deploy: prepare to run"
-      run: ./script/bootstrap
-    - run: exit
-    
-    - name: "Deploy: Executing"
-      run: rake bootstrap
-    - name: "Access: Add user to org"
-      run: # Add user to org
-    - name: "Access: Add buddy to org"
-      run: # Add buddy to org
+      - name: "Validate: Is TARGET_HANDLE set?"
+        run: |
+          if [[ -z "${TARGET_HANDLE}" ]]; then
+            gh issue comment $ISSUE --body "@${{ github.actor }} Deployment Error: new-hire's handle appears to be blank in the issue body above. Please edit the body, and the deployment will retry."
+            exit 1
+          fi
+      - name: "Validate: Is TARGET_HOST set?"
+        run: |
+          if [[ -z "${TARGET_HOST}" ]]; then
+            gh issue comment $ISSUE --body "@${{ github.actor }} Deployment Error: 'Where should the repository be created?' appears to be blank in the issue body above. Please edit the body, and the deployment will retry."
+            exit 1
+          fi
+      - name: "Validate: Is TARGET_TEAM set?"
+        run: |
+          if [[ -z "${TARGET_TEAM}" ]]; then
+            gh issue comment $ISSUE --body "@${{ github.actor }} Deployment Error: 'What role does new hire have?' appears to be blank in the issue body above. Please edit the body, and the deployment will retry."
+            exit 1
+          fi
+      - name: "Deploy: get onboarder-next"
+        uses: actions/checkout@v3
+        with:
+          repository: github/onboarder-next
+      - name: "Deploy: setup ruby"
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          bundler-cache: true
+      - name: Deploy: Update issue with progreess
+        run: |
+          # gh issue comment $ISSUE --body
+      - name: Deploy: edit config/settings.yml with the values within the issue
+        run: |
+          mv config/settings.orig.yml config/settings.yml
+          sed -i -- "s|  api_endpoint: https://ghe.io/api/v3/|  api_endpoint: $TARGET_API|g" config/settings.yml
+          sed -i -- "s|  web_endpoint: https://ghe.io|  web_endpoint: $TARGET_WEB|g" config/settings.yml
+          sed -i -- "s|  username: [username]|  username: timburgan|g" config/settings.yml
+          sed -i -- "s|  oauth_token: [token]|  oauth_token: $TARGET_TOKEN}|g" config/settings.yml
+          sed -i -- "s|  organization: new-hires|  organization: $TARGET_ORG|g" config/settings.yml
+          sed -i -- "s|  department: [enterprise-support-engineers|technical-support-engineers|security-support-engineers|customer-reliability-engineers|premium-support-engineers]|  department: $TARGET_TEAM|g" config/settings.yml
+          sed -i -- "s|    name: "John Doe"|    name: "@$TARGET_HANDLE"|g" config/settings.yml
+          sed -i -- "s|    email: "john.doe@github.com"|    email: "$TARGET_HANDLE@github.com"|g" config/settings.yml
+          sed -i -- "s|    job_title: "Enterprise|Technical|Premium|Security Support Engineer|Account Manager"|    job_title: "Support Engineer"|g" config/settings.yml
+      - name: "Deploy: prepare to run"
+        run: ./script/bootstrap
+      - run: exit
+
+      - name: "Deploy: Executing"
+        run: rake bootstrap
+      - name: "Access: Add user to org"
+        run: # Add user to org
+      - name: "Access: Add buddy to org"
+        run: # Add buddy to org
