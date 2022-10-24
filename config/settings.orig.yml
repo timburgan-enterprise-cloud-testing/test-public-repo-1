@@ -1,0 +1,50 @@
+ Core configuration variables
+core:
+  api_endpoint: https://ghe.io/api/v3/
+  web_endpoint: https://ghe.io
+
+  # The user that you want to connect to the API with.
+  # This user should have write permission to the ghe.io/new-hires org if you run the onboarder-next with the default settings.
+  username: [username]
+
+  # To authenticate against the API, a Personal Access Token is required. You
+  # can generate one at https://[hostname]/settings/tokens. The only
+  # scope required is the "repo" scope.
+  # Optionally, you can include the "delete_repo" scope to run `rake {destroy,delete_repository}`.
+  oauth_token: [token]
+
+  # If the repository should live under an organization, provide the
+  # organization name here. Leave it blank if the repository should live under
+  # your own user account. Keep in mind, to be able to create a repository
+  # under an organization, you need to be an owner of that organization.
+  organization: new-hires
+
+  # Sets the repository either to public or private. At this time, you'll need
+  # to manually adjust access permissions after the repository has been created.
+  private: [true|false]
+
+# Content
+content:
+  # Change to the name of a sub-directory of the data directory, where issues and
+  # milestones are defined for each role.
+  department: [enterprise-support-engineers|technical-support-engineers|security-support-engineers|customer-reliability-engineers|premium-support-engineers]
+  new_hire:
+    name: "John Doe"
+    email: "john.doe@github.com"
+    job_title: "Enterprise|Technical|Premium|Security Support Engineer|Account Manager"
+  labels:
+    label_1:
+      name: "buddy"
+      color: "006b75"
+    label_2:
+      name: "new-hire"
+      color: "eb6420"
+    label_3:
+      name: "culture"
+      color: "0052cc"
+    label_4:
+      name: "setup"
+      color: "e0a6ea"
+    label_5:
+      name: "review"
+      color: "fbca04"
