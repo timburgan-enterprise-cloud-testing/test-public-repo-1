@@ -22,7 +22,7 @@ jobs:
         run: |
           HANDLE_RAW=$(echo "${{ github.event.issue.body }}" | grep -A2 '### New Hire handle (without @)')
           HANDLE_RAW=$(echo "=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'<<<"${HANDLE_RAW}")=")
-          run: echo "TARGET_HANDLE=$HANDLE_RAW" >> $GITHUB_ENV
+          echo "TARGET_HANDLE=$HANDLE_RAW" >> $GITHUB_ENV
     # target host - for now, this is crude, use the latest checkbox selected if the user for some reason selected multiple
       - name: "Parse: TARGET_HOST DotCom"
         if: contains(github.event.issue.body, '- [X] DotCom - github.com/github/support-onboarding-[handle]')
