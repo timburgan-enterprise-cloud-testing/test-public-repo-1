@@ -20,6 +20,7 @@ body:
       options:
         - label: github.com/github/support-onboarding-[handle]
         - label: ghe.io/new-hires/[handle]
+        - label: github.ghe.com/new-hires/[handle]
   - type: checkboxes
     id: role
     attributes:
