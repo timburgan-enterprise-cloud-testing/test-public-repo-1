@@ -106,6 +106,7 @@ jobs:
       - name: "Deploy: Update issue with progreess"
         run: |
           # gh issue comment $ISSUE --body
+          echo meh
       - name: "Deploy: edit config/settings.yml with the values within the issue"
         run: |
           mv config/settings.orig.yml config/settings.yml
@@ -127,6 +128,8 @@ jobs:
       - name: "Access: Add user to org"
         run: |
           # Add user to org
+          echo meh
       - name: "Access: Add buddy to org"
         run: |
           # Add buddy to org
+          echo meh
