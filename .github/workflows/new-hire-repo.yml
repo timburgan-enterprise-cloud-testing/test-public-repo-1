@@ -9,10 +9,9 @@ on:
   issues:
     types:
       - created
-      - edited
 jobs:
   new_hire:
-    if: contains(github.event.issue.labels.*.name, 'new-hire')
+#     if: contains(github.event.issue.labels.*.name, 'new-hire')
     name: new hire repo
     runs-on: ubuntu-latest
     env:
