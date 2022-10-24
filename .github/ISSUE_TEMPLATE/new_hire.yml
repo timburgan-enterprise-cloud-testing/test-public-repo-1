@@ -18,9 +18,9 @@ body:
     attributes:
       label: Where should the repository be created?
       options:
-        - label: "DotCom: github.com/github/support-onboarding-[handle]"
-        - label: "GHES: ghe.io/new-hires/[handle]"
-        - label: "GHAE: github.ghe.com/new-hires/[handle]"
+        - label: "DotCom - github.com/github/support-onboarding-[handle]"
+        - label: "GHES - ghe.io/new-hires/[handle]"
+        - label: "GHAE - github.ghe.com/new-hires/[handle]"
   - type: checkboxes
     id: role
     attributes:
