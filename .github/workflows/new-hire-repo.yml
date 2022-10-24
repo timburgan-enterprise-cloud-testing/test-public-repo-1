@@ -5,6 +5,7 @@
 
 name: Create repository for New Hire 
 on:
+  workflow_dispatch:
   issues:
     types:
       - created
