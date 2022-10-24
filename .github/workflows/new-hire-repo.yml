@@ -7,7 +7,7 @@ name: Create repository for New Hire
 on:
   workflow_dispatch:
   issues:
-    types: opened, edited]
+    types: [opened, edited]
 jobs:
   new_hire:
     if: contains(github.event.issue.labels.*.name, 'new-hire')
