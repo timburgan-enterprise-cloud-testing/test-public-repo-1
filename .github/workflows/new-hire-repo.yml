@@ -103,10 +103,10 @@ jobs:
         with:
           ruby-version: '3.1'
           bundler-cache: true
-      - name: Deploy: Update issue with progreess
+      - name: "Deploy: Update issue with progreess"
         run: |
           # gh issue comment $ISSUE --body
-      - name: Deploy: edit config/settings.yml with the values within the issue
+      - name: "Deploy: edit config/settings.yml with the values within the issue"
         run: |
           mv config/settings.orig.yml config/settings.yml
           sed -i -- "s|  api_endpoint: https://ghe.io/api/v3/|  api_endpoint: $TARGET_API|g" config/settings.yml
@@ -125,6 +125,8 @@ jobs:
       - name: "Deploy: Executing"
         run: rake bootstrap
       - name: "Access: Add user to org"
-        run: # Add user to org
+        run: |
+          # Add user to org
       - name: "Access: Add buddy to org"
-        run: # Add buddy to org
+        run: |
+          # Add buddy to org
