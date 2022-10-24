@@ -8,11 +8,15 @@ on:
   issues:
     types:
       - created
+      - edited
 jobs:
   new_hire:
     if: contains(github.event.issue.labels.*.name, 'new-hire')
     name: new hire repo
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      ISSUE: ${{ github.event.issue.html_url }}
     steps:
     # target handle
       - name: "Parse: TARGET_HANDLE"
@@ -28,6 +32,7 @@ jobs:
           echo "TARGET_API=https://api.github.com/" >> $GITHUB_ENV
           echo "TARGET_ORG=github" >> $GITHUB_ENV
           echo "TARGET_PUBLIC_VISIBILITY=false" >> $GITHUB_ENV
+          echo "TARGET_TOKEN=${{ secrets.NEWHIRE_SECRET_DOTCOM_TIMBURGAN }}" >> $GITHUB_ENV
       - name: "Parse: TARGET_HOST GHES"
         if: contains(github.event.issue.body, '- [X] GHES: ghe.io/new-hires/[handle]')
         run: |
@@ -35,6 +40,7 @@ jobs:
           echo "TARGET_API=https://ghe.io/api/v3/" >> $GITHUB_ENV
           echo "TARGET_ORG=new-hires" >> $GITHUB_ENV
           echo "TARGET_PUBLIC_VISIBILITY=true" >> $GITHUB_ENV
+          echo "TARGET_TOKEN=${{ secrets.NEWHIRE_SECRET_GHES_TIMBURGAN }}" >> $GITHUB_ENV
       - name: "Parse: TARGET_HOST GHAE"
         if: contains(github.event.issue.body, '- [X] GHAE: github.ghe.com/new-hires/[handle]')
         run: |
@@ -42,6 +48,12 @@ jobs:
           echo "TARGET_API=https://github.ghe.com/api/v3/" >> $GITHUB_ENV
           echo "TARGET_ORG=new-hires" >> $GITHUB_ENV
           echo "TARGET_PUBLIC_VISIBILITY=true" >> $GITHUB_ENV
+          echo "TARGET_TOKEN=${{ secrets.NEWHIRE_SECRET_GHAE_TIMBURGAN }}" >> $GITHUB_ENV
+          
+          gh issue comment $ISSUE --body "@${{ github.actor }} GHAE deployment is not supported currently. Please use the manual deployment method described in the README."
+          gh issue close $ISSUE
+          exit 1
+          
     # target team - for now, this is crude, use the latest checkbox selected if the user for some reason selected multiple
       - name: "Parse: TARGET_TEAM S&R"
         if: contains(github.event.issue.body, '- [X] Support Engineer - Security and Revenue')
@@ -67,19 +79,19 @@ jobs:
     - name: "Validate: Is TARGET_HANDLE set?"
       run: |
         if [[ -z "${TARGET_HANDLE}" ]]; then
-          gh issue comment "Deployment Error: new-hire's handle appears to be blank in the issue body above. Please edit the body, and the deployment will retry."
+          gh issue comment $ISSUE --body "@${{ github.actor }} Deployment Error: new-hire's handle appears to be blank in the issue body above. Please edit the body, and the deployment will retry."
           exit 1
         fi
     - name: "Validate: Is TARGET_HOST set?"
       run: |
         if [[ -z "${TARGET_HOST}" ]]; then
-          gh issue comment "Deployment Error: 'Where should the repository be created?' appears to be blank in the issue body above. Please edit the body, and the deployment will retry."
+          gh issue comment $ISSUE --body "@${{ github.actor }} Deployment Error: 'Where should the repository be created?' appears to be blank in the issue body above. Please edit the body, and the deployment will retry."
           exit 1
         fi
     - name: "Validate: Is TARGET_TEAM set?"
       run: |
         if [[ -z "${TARGET_TEAM}" ]]; then
-          gh issue comment "Deployment Error: 'What role does new hire have?' appears to be blank in the issue body above. Please edit the body, and the deployment will retry."
+          gh issue comment $ISSUE --body "@${{ github.actor }} Deployment Error: 'What role does new hire have?' appears to be blank in the issue body above. Please edit the body, and the deployment will retry."
           exit 1
         fi
     - name: "Deploy: get onboarder-next"
@@ -91,13 +103,16 @@ jobs:
       with:
         ruby-version: '3.1'
         bundler-cache: true
+    - name: Deploy: Update issue with progreess
+      run: |
+        # gh issue comment $ISSUE --body
     - name: Deploy: edit config/settings.yml with the values within the issue
       run: |
         mv config/settings.orig.yml config/settings.yml
         sed -i -- "s|  api_endpoint: https://ghe.io/api/v3/|  api_endpoint: $TARGET_API|g" config/settings.yml
         sed -i -- "s|  web_endpoint: https://ghe.io|  web_endpoint: $TARGET_WEB|g" config/settings.yml
         sed -i -- "s|  username: [username]|  username: timburgan|g" config/settings.yml
-        sed -i -- "s|  oauth_token: [token]|  oauth_token: ${{ github.secrets.NEWHIRE_SECRET_TIMBURGAN}}|g" config/settings.yml
+        sed -i -- "s|  oauth_token: [token]|  oauth_token: $TARGET_TOKEN}|g" config/settings.yml
         sed -i -- "s|  organization: new-hires|  organization: $TARGET_ORG|g" config/settings.yml
         sed -i -- "s|  department: [enterprise-support-engineers|technical-support-engineers|security-support-engineers|customer-reliability-engineers|premium-support-engineers]|  department: $TARGET_TEAM|g" config/settings.yml
         sed -i -- "s|    name: "John Doe"|    name: "@$TARGET_HANDLE"|g" config/settings.yml
