@@ -13,10 +13,6 @@ body:
       label: New Hire handle (without @)
     validations:
       required: true
-  - type: markdown
-    attributes:
-      value: |
-        Wait. Please have the new-hire login to `ghe.io` via their Okta tile BEFORE creating this issue. Everything will fail without that login being successful _first_. If the user has no Okta tile for it yet, please wait for that.
   - type: checkboxes
     id: target
     attributes:
@@ -25,6 +21,11 @@ body:
         # Note: DotCom is disabled for now. GitHub Actions PAT must be a github org admin, which it's not.
         # - label: "DotCom - github.com/github/support-onboarding-[handle]"
         - label: "GHES - ghe.io/new-hires/[handle]"
+  - type: markdown
+    attributes:
+      value: |
+        > **ghe.io Warning**
+        BEFORE creating this issue, have the new-hire login to [ghe.io](https://ghe.io) via their **Okta** tile. Everything will fail without that login being successful _first_. If the user has no Okta tile for [ghe.io](https://ghe.io) yet, please wait for that.
   - type: checkboxes
     id: role
     attributes:
